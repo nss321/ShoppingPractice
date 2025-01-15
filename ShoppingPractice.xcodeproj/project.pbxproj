@@ -21,9 +21,12 @@
 		11E366F62D37848B008C1E04 /* ShoppingListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11E366F52D37848B008C1E04 /* ShoppingListViewController.swift */; };
 		11E366FB2D378748008C1E04 /* Merchandise.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11E366FA2D378736008C1E04 /* Merchandise.swift */; };
 		11E366FD2D37DC54008C1E04 /* UIView+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11E366FC2D37DC4B008C1E04 /* UIView+.swift */; };
-		11E367002D37E26B008C1E04 /* BaseCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11E366FF2D37E26B008C1E04 /* BaseCollectionViewCell.swift */; };
+		11E367002D37E26B008C1E04 /* BaseComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11E366FF2D37E26B008C1E04 /* BaseComponent.swift */; };
 		11E367042D37EF01008C1E04 /* APIKeys.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11E367032D37EF01008C1E04 /* APIKeys.swift */; };
 		11E367062D37EF11008C1E04 /* Urls.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11E367052D37EF11008C1E04 /* Urls.swift */; };
+		11E367082D37F5E7008C1E04 /* String+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11E367072D37F5E3008C1E04 /* String+.swift */; };
+		11E3670C2D37F7A0008C1E04 /* ShoppingListCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11E3670B2D37F7A0008C1E04 /* ShoppingListCollectionViewCell.swift */; };
+		11E3670E2D37F883008C1E04 /* CustomLikeButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11E3670D2D37F87D008C1E04 /* CustomLikeButton.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -39,10 +42,13 @@
 		11E366F52D37848B008C1E04 /* ShoppingListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShoppingListViewController.swift; sourceTree = "<group>"; };
 		11E366FA2D378736008C1E04 /* Merchandise.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Merchandise.swift; sourceTree = "<group>"; };
 		11E366FC2D37DC4B008C1E04 /* UIView+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+.swift"; sourceTree = "<group>"; };
-		11E366FF2D37E26B008C1E04 /* BaseCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseCollectionViewCell.swift; sourceTree = "<group>"; };
+		11E366FF2D37E26B008C1E04 /* BaseComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseComponent.swift; sourceTree = "<group>"; };
 		11E367012D37EEC7008C1E04 /* .gitignore */ = {isa = PBXFileReference; lastKnownFileType = text; path = .gitignore; sourceTree = "<group>"; };
 		11E367032D37EF01008C1E04 /* APIKeys.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIKeys.swift; sourceTree = "<group>"; };
 		11E367052D37EF11008C1E04 /* Urls.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Urls.swift; sourceTree = "<group>"; };
+		11E367072D37F5E3008C1E04 /* String+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+.swift"; sourceTree = "<group>"; };
+		11E3670B2D37F7A0008C1E04 /* ShoppingListCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShoppingListCollectionViewCell.swift; sourceTree = "<group>"; };
+		11E3670D2D37F87D008C1E04 /* CustomLikeButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomLikeButton.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -120,6 +126,7 @@
 		11E366EF2D3782D5008C1E04 /* Extension */ = {
 			isa = PBXGroup;
 			children = (
+				11E367072D37F5E3008C1E04 /* String+.swift */,
 				11E366FC2D37DC4B008C1E04 /* UIView+.swift */,
 				11E366F22D378322008C1E04 /* UIViewController+.swift */,
 			);
@@ -140,7 +147,9 @@
 		11E366FE2D37E25A008C1E04 /* Component */ = {
 			isa = PBXGroup;
 			children = (
-				11E366FF2D37E26B008C1E04 /* BaseCollectionViewCell.swift */,
+				11E3670D2D37F87D008C1E04 /* CustomLikeButton.swift */,
+				11E3670B2D37F7A0008C1E04 /* ShoppingListCollectionViewCell.swift */,
+				11E366FF2D37E26B008C1E04 /* BaseComponent.swift */,
 			);
 			path = Component;
 			sourceTree = "<group>";
@@ -239,14 +248,17 @@
 			files = (
 				11E366F12D3782F9008C1E04 /* ViewConfig.swift in Sources */,
 				11E366E92D3782C2008C1E04 /* AppDelegate.swift in Sources */,
-				11E367002D37E26B008C1E04 /* BaseCollectionViewCell.swift in Sources */,
+				11E367002D37E26B008C1E04 /* BaseComponent.swift in Sources */,
 				11E366F62D37848B008C1E04 /* ShoppingListViewController.swift in Sources */,
 				11E367062D37EF11008C1E04 /* Urls.swift in Sources */,
+				11E3670E2D37F883008C1E04 /* CustomLikeButton.swift in Sources */,
 				11E366F32D378327008C1E04 /* UIViewController+.swift in Sources */,
 				11E366FD2D37DC54008C1E04 /* UIView+.swift in Sources */,
+				11E3670C2D37F7A0008C1E04 /* ShoppingListCollectionViewCell.swift in Sources */,
 				11E367042D37EF01008C1E04 /* APIKeys.swift in Sources */,
 				11E366FB2D378748008C1E04 /* Merchandise.swift in Sources */,
 				11E366EA2D3782C2008C1E04 /* SceneDelegate.swift in Sources */,
+				11E367082D37F5E7008C1E04 /* String+.swift in Sources */,
 				11E366EB2D3782C2008C1E04 /* ViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

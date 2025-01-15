@@ -27,6 +27,7 @@ class ViewController: UIViewController, ViewConfig {
     }
     
     var lastSearched = ""
+    var lastUrl = ""
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -76,6 +77,7 @@ class ViewController: UIViewController, ViewConfig {
                 if value.items.isEmpty {
                     self.showAlert(title: "검색 결과", message: "검색 결과가 없습니다.", handler: nil)
                 } else {
+                    self.lastUrl = url
                     self.shoppingItemsAndTotal = value
                 }
             case .failure(let error):
@@ -91,7 +93,11 @@ class ViewController: UIViewController, ViewConfig {
         print(#function)
         let vc = ShoppingListViewController()
         vc.shoppingItemsAndTotal = items
-        vc.navigationItem.title = navTitle
+        vc.requestedUrl = lastUrl
+        vc.navigationItem.titleView = UILabel().then {
+            $0.text = navTitle
+            $0.font = .systemFont(ofSize: 16, weight: .black)
+        }
         self.navigationController?.pushViewController(vc, animated: true)
     }
 }
