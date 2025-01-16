@@ -7,7 +7,7 @@
 
 struct Merchandise: Decodable {
     let total: Int
-    let items: [MerchandiseInfo]
+    var items: [MerchandiseInfo]
 }
 
 struct MerchandiseInfo: Decodable {
@@ -22,4 +22,9 @@ struct MerchandiseInfo: Decodable {
         case price = "lprice"
         case mall = "mallName"
     }
+}
+
+struct ShoppingAPIError: Decodable {
+    let errorMessage: String
+    let errorCode: String
 }
