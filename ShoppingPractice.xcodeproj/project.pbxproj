@@ -28,6 +28,7 @@
 		11E3670C2D37F7A0008C1E04 /* ShoppingListCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11E3670B2D37F7A0008C1E04 /* ShoppingListCollectionViewCell.swift */; };
 		11E3670E2D37F883008C1E04 /* CustomLikeButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11E3670D2D37F87D008C1E04 /* CustomLikeButton.swift */; };
 		11E367122D387E5F008C1E04 /* ShoppingService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11E367112D387E53008C1E04 /* ShoppingService.swift */; };
+		11E367662D3969E9008C1E04 /* BaseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11E367652D3969E4008C1E04 /* BaseViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -51,6 +52,7 @@
 		11E3670B2D37F7A0008C1E04 /* ShoppingListCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShoppingListCollectionViewCell.swift; sourceTree = "<group>"; };
 		11E3670D2D37F87D008C1E04 /* CustomLikeButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomLikeButton.swift; sourceTree = "<group>"; };
 		11E367112D387E53008C1E04 /* ShoppingService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShoppingService.swift; sourceTree = "<group>"; };
+		11E367652D3969E4008C1E04 /* BaseViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -88,6 +90,7 @@
 		11E366E52D3782C2008C1E04 /* ShoppingPractice */ = {
 			isa = PBXGroup;
 			children = (
+				11E367632D3969C8008C1E04 /* Base */,
 				11E367022D37EEF4008C1E04 /* Network */,
 				11E366FE2D37E25A008C1E04 /* Component */,
 				11E366F42D3783A2008C1E04 /* App */,
@@ -164,6 +167,14 @@
 				11E367052D37EF11008C1E04 /* Urls.swift */,
 			);
 			path = Network;
+			sourceTree = "<group>";
+		};
+		11E367632D3969C8008C1E04 /* Base */ = {
+			isa = PBXGroup;
+			children = (
+				11E367652D3969E4008C1E04 /* BaseViewController.swift */,
+			);
+			path = Base;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -262,6 +273,7 @@
 				11E367042D37EF01008C1E04 /* APIKeys.swift in Sources */,
 				11E366FB2D378748008C1E04 /* Merchandise.swift in Sources */,
 				11E366EA2D3782C2008C1E04 /* SceneDelegate.swift in Sources */,
+				11E367662D3969E9008C1E04 /* BaseViewController.swift in Sources */,
 				11E367082D37F5E7008C1E04 /* String+.swift in Sources */,
 				11E366EB2D3782C2008C1E04 /* ViewController.swift in Sources */,
 			);

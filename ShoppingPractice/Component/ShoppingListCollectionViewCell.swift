@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import Kingfisher
 import SnapKit
 import Then
 
@@ -34,11 +35,7 @@ class ShoppingListCollectionViewCell: BaseCollectionViewCell {
         configCell()
         print(#function)
     }
-//    
-//    init() {
-//        super.init(frame: .zero)
-//    }
-//    
+
     private func configCell() {
         [imageView, mallNameLabel, titleLabel, lpriceLabel, likeButton].forEach { contentView.addSubview($0) }
         

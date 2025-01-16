@@ -66,7 +66,7 @@ class ShoppingService {
             case .success(let value):
                 dump(value)
                 completion(value)
-            case .failure(let error):
+            case .failure(_):
                 if let errorData = response.data {
                     print(errorData)
                     do {
@@ -85,7 +85,7 @@ class ShoppingService {
     func callSearchRequest(text: String, sortedBy: SortBy, completion: @escaping(Merchandise)->Void){
         var url = Urls.naverShoppingWithKeywordWithParams(
             keyword: text,
-            params: [.display : "-1"])
+            params: [.display : "30"])
         url.append(naverParams.sort.param)
         
         switch sortedBy {
@@ -107,12 +107,12 @@ class ShoppingService {
                    method: .get,
                    headers: header
         ).responseDecodable(of: Merchandise.self) { response in
-            print(response.response?.statusCode)
+//            print(response.response?.statusCode)
             switch response.result {
             case .success(let value):
                 dump(value)
                 completion(value)
-            case .failure(let error):
+            case .failure(_):
 //                print(error)
                 if let errorData = response.data {
                     print(errorData)
@@ -159,7 +159,7 @@ class ShoppingService {
             case .success(let value):
                 dump(value)
                 completion(value)
-            case .failure(let error):
+            case .failure(_):
                 if let errorData = response.data {
                     print(errorData)
                     do {

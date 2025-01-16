@@ -6,8 +6,6 @@
 //
 
 import UIKit
-import Alamofire
-import Kingfisher
 import Then
 import SnapKit
 
@@ -37,66 +35,34 @@ enum SortBy: String {
     }
 }
 
-class ShoppingListViewController: UIViewController, ViewConfig {
+class ShoppingListViewController: BaseViewController {
     
     /*
      frame, layout init 안해주면
      UICollectionView must be initialized with a non-nil layout parameter
      뿜으면서 터짐
      */
-    private let resultCntLabel = UILabel()
-    private let collectionView = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout())
-    private let filterStack = UIStackView()
-    private let accuracyFilter = UIButton()
-    private let dateFilter = UIButton()
-    private let hPriceFilter = UIButton()
-    private let lPriceFilter = UIButton()
 
-    var shoppingItemsAndTotal: Merchandise = Merchandise(total: 0, items: []) {
+    override var shoppingItemsAndTotal: Merchandise {
         didSet {
             collectionView.reloadData()
         }
     }
     
-    var _requestedUrl: String = ""
-    
-    var requestedUrl: String {
-        get {
-            return _requestedUrl
-        }
-        set {
-            _requestedUrl = newValue
-        }
-    }
-    
-    var lastFilter: SortBy = .sim
-    
-    var page = 1
-    
     // display를 30으로 두고, currentPage가 28일 떄 프리패치 실행하는 전략
-    var currentPage: Int {
-        return shoppingItemsAndTotal.items.count
-    }
-    
-    let spacing: CGFloat = 12
-    
-    var buttonsState = Array(repeating: false, count: 4)
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        configHierarchy()
-        configLayout()
-        configView()
         configNavigation()
     }
     
-    func configHierarchy() {
+    override func configureHierarchy() {
         print(#function)
         [resultCntLabel, filterStack, collectionView].forEach { view.addSubview($0) }
         [accuracyFilter, dateFilter, hPriceFilter, lPriceFilter].forEach { filterStack.addArrangedSubview($0) }
     }
     
-    func configLayout() {
+    override func configureLayout() {
         print(#function)
         resultCntLabel.snp.makeConstraints {
             $0.top.equalTo(view.safeAreaLayoutGuide).offset(12)
@@ -116,8 +82,7 @@ class ShoppingListViewController: UIViewController, ViewConfig {
         }
     }
     
-    func configView() {
-        print(#function)
+    override func configureView() {
         resultCntLabel.do {
             let formatter = NumberFormatter().then { $0.numberStyle = .decimal }
             let totalResult = formatter.string(for: shoppingItemsAndTotal.total)
@@ -156,51 +121,6 @@ class ShoppingListViewController: UIViewController, ViewConfig {
             $0.prefetchDataSource = self
             $0.register(ShoppingListCollectionViewCell.self, forCellWithReuseIdentifier: ShoppingListCollectionViewCell.id)
         }
-    }
-    
-    func configNavigation() {
-        self.navigationItem.leftBarButtonItem = UIBarButtonItem(
-            image: UIImage(systemName: "chevron.left")!.withTintColor(.white, renderingMode: .alwaysOriginal),
-            style: .plain,
-            target: self,
-            action: #selector(popThisViewController))
-    }
-    
-    @objc
-    func popThisViewController(_ sender: UIBarButtonItem) {
-        print(#function)
-        navigationController?.popViewController(animated: true)
-    }
-    
-    func makeUIAction(sortedBy: SortBy) -> UIAction {
-        return UIAction { _ in
-            self.collectionView.scrollToItem(at: IndexPath(row: 0, section: 0), at: .top, animated: true)
-            
-            if self.lastFilter == sortedBy {
-                return
-            } else {
-                ShoppingService.shared.callSearchRequest(text: self.requestedUrl, sortedBy: sortedBy) {
-                    self.shoppingItemsAndTotal = $0
-                }
-                self.lastFilter = sortedBy
-            }
-        }
-    }
-    
-    func makeButtonConfig(title: String) -> UIButton.Configuration {
-        var attribString = AttributedString(title)
-        attribString.font = .systemFont(ofSize: 16)
-        
-        var config = UIButton.Configuration.plain()
-        config.attributedTitle = attribString
-        
-        // plain 버튼의 글자색은 baseForegroundColor로 변경
-        config.baseForegroundColor = .white
-        config.background.backgroundColor = .black
-        config.background.strokeWidth = 1
-        config.background.strokeColor = .white
-        
-        return config
     }
 }
 
@@ -250,7 +170,7 @@ extension ShoppingListViewController: UICollectionViewDataSourcePrefetching {
         // TODO: 공식문서 확인
         for item in indexPaths {
             if currentPage - 3 == item.row {
-                ShoppingService.shared.callSearchRequest(text: requestedUrl, sortedBy: lastFilter, startAt: currentPage) {
+                ShoppingService.shared.callSearchRequest(text: lastSearched, sortedBy: lastFilter, startAt: currentPage) {
                     self.shoppingItemsAndTotal.items.append(contentsOf: $0.items)
                 }
             }
