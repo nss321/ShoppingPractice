@@ -54,6 +54,8 @@ class ShoppingListViewController: BaseViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         configNavigation()
+        self.navigationController?.interactivePopGestureRecognizer?.isEnabled = true
+        self.navigationController?.interactivePopGestureRecognizer?.delegate = self
     }
     
     override func configureHierarchy() {
@@ -179,4 +181,12 @@ extension ShoppingListViewController: UICollectionViewDataSourcePrefetching {
     }
     
     
+}
+
+extension ShoppingListViewController: UIGestureRecognizerDelegate {
+    func gestureRecognizerShouldBegin(_ gestureRecognizer: UIGestureRecognizer) -> Bool {
+        
+        print(navigationController?.viewControllers.count ?? 0 )
+        return navigationController?.viewControllers.count ?? 0 > 1
+    }
 }
