@@ -27,6 +27,7 @@
 		11E367082D37F5E7008C1E04 /* String+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11E367072D37F5E3008C1E04 /* String+.swift */; };
 		11E3670C2D37F7A0008C1E04 /* ShoppingListCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11E3670B2D37F7A0008C1E04 /* ShoppingListCollectionViewCell.swift */; };
 		11E3670E2D37F883008C1E04 /* CustomLikeButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11E3670D2D37F87D008C1E04 /* CustomLikeButton.swift */; };
+		11E367122D387E5F008C1E04 /* ShoppingService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11E367112D387E53008C1E04 /* ShoppingService.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -49,6 +50,7 @@
 		11E367072D37F5E3008C1E04 /* String+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+.swift"; sourceTree = "<group>"; };
 		11E3670B2D37F7A0008C1E04 /* ShoppingListCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShoppingListCollectionViewCell.swift; sourceTree = "<group>"; };
 		11E3670D2D37F87D008C1E04 /* CustomLikeButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomLikeButton.swift; sourceTree = "<group>"; };
+		11E367112D387E53008C1E04 /* ShoppingService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShoppingService.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -157,6 +159,7 @@
 		11E367022D37EEF4008C1E04 /* Network */ = {
 			isa = PBXGroup;
 			children = (
+				11E367112D387E53008C1E04 /* ShoppingService.swift */,
 				11E367032D37EF01008C1E04 /* APIKeys.swift */,
 				11E367052D37EF11008C1E04 /* Urls.swift */,
 			);
@@ -255,6 +258,7 @@
 				11E366F32D378327008C1E04 /* UIViewController+.swift in Sources */,
 				11E366FD2D37DC54008C1E04 /* UIView+.swift in Sources */,
 				11E3670C2D37F7A0008C1E04 /* ShoppingListCollectionViewCell.swift in Sources */,
+				11E367122D387E5F008C1E04 /* ShoppingService.swift in Sources */,
 				11E367042D37EF01008C1E04 /* APIKeys.swift in Sources */,
 				11E366FB2D378748008C1E04 /* Merchandise.swift in Sources */,
 				11E366EA2D3782C2008C1E04 /* SceneDelegate.swift in Sources */,

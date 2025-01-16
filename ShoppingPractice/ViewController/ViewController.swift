@@ -3,7 +3,7 @@
 //  ShoppingPractice
 //
 //  Created by BAE on 1/15/25.
-//
+//  4h30m
 
 import UIKit
 import SnapKit
@@ -17,11 +17,6 @@ class ViewController: UIViewController, ViewConfig {
     var shoppingItemsAndTotal: Merchandise = Merchandise(total: 0, items: []) {
         didSet {
             print("didset")
-//            print("shopping item:", self.shoppingItems)
-//            let vc = ShoppingListViewController()
-//            vc.shoppingItems = self.shoppingItems
-//            vc.navigationItem.title = searchBar.searchTextField.text
-//            self.navigationController?.pushViewController(vc, animated: true)
             self.pushShoppingListViewController(items: self.shoppingItemsAndTotal, navTitle: searchBar.searchTextField.text!)
         }
     }
@@ -57,35 +52,42 @@ class ViewController: UIViewController, ViewConfig {
     }
     
     func callRequest(text: String) {
-        let url = Urls.naverShoppingWithKeywordWithParams(
-            keyword: text,
-            params: [.display:"100"])
-        
-        let header: HTTPHeaders = [
-            "X-Naver-Client-Id" : APIKey.naverClientId,
-            "X-Naver-Client-Secret" : APIKey.naverClientSecret
-        ]
-        AF.request(url,
-                   method: .get,
-                   headers: header
-        )
-        .validate()
-        .responseDecodable(of: Merchandise.self) { response in
-            switch response.result {
-            case .success(let value):
-                dump(value.items)
-                if value.items.isEmpty {
-                    self.showAlert(title: "검색 결과", message: "검색 결과가 없습니다.", handler: nil)
-                } else {
-                    self.lastUrl = url
-                    self.shoppingItemsAndTotal = value
-                }
-            case .failure(let error):
-                print(error)
+        ShoppingService.shared.callSearchRequest(text: text) {
+            if $0.items.isEmpty {
+                self.showAlert(title: "검색 결과", message: "검색 결과가 없습니다.", handler: nil)
+            } else {
+                self.shoppingItemsAndTotal = $0
+
             }
         }
-//        .responseString { value in
-//            dump(value)
+        
+        // MARK: 기존 로직
+//        let url = Urls.naverShoppingWithKeywordWithParams(
+//            keyword: text,
+//            params: [.display:"100"])
+//        
+//        let header: HTTPHeaders = [
+//            "X-Naver-Client-Id" : APIKey.naverClientId,
+//            "X-Naver-Client-Secret" : APIKey.naverClientSecret
+//        ]
+//        AF.request(url,
+//                   method: .get,
+//                   headers: header
+//        )
+//        .validate()
+//        .responseDecodable(of: Merchandise.self) { response in
+//            switch response.result {
+//            case .success(let value):
+//                dump(value.items)
+//                if value.items.isEmpty {
+//                    self.showAlert(title: "검색 결과", message: "검색 결과가 없습니다.", handler: nil)
+//                } else {
+//                    self.lastUrl = url
+//                    self.shoppingItemsAndTotal = value
+//                }
+//            case .failure(let error):
+//                print(error)
+//            }
 //        }
     }
     
@@ -93,7 +95,7 @@ class ViewController: UIViewController, ViewConfig {
         print(#function)
         let vc = ShoppingListViewController()
         vc.shoppingItemsAndTotal = items
-        vc.requestedUrl = lastUrl
+        vc.requestedUrl = lastSearched
         vc.navigationItem.titleView = UILabel().then {
             $0.text = navTitle
             $0.font = .systemFont(ofSize: 16, weight: .black)

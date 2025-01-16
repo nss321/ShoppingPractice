@@ -109,94 +109,23 @@ class ShoppingListViewController: UIViewController, ViewConfig {
             $0.distribution = .fillProportionally
         }
         
-//        accuracyFilter.do {
-//            var config = UIButton.Configuration.plain()
-//            var attribString = AttributedString("정확도")
-//            attribString.font = .system(size: 16)
-//            attribString.foregroundColor = .white
-//            config.attributedTitle = attribString
-//            config.background.backgroundColor = .black
-//            config.background.strokeWidth = 1
-//            config.background.strokeColor = .white
-//            
-//            $0.configuration = config
-//        }
-//        dateFilter.do {
-//            var config = accuracyFilter.configuration!.updated(for: accuracyFilter)
-//            var attribString = AttributedString("정확도")
-//            attribString.font = .system(size: 16)
-//            attribString.foregroundColor = .white
-//            config.attributedTitle = attribString
-//            $0.configuration = config
-//        }
-//        
-//        hPriceFilter.do {
-//            var config = UIButton.Configuration.plain()
-//            var attribString = AttributedString("정확도")
-//            attribString.font = .system(size: 16)
-//            attribString.foregroundColor = .white
-//            config.attributedTitle = attribString
-//            config.background.backgroundColor = .black
-//            config.background.strokeWidth = 1
-//            config.background.strokeColor = .white
-//
-//            $0.configuration = config
-//        }
-//        lPriceFilter.do {
-//            var config = UIButton.Configuration.plain()
-//            var attribString = AttributedString("정확도")
-//            attribString.font = .system(size: 16)
-//            attribString.foregroundColor = .white
-//            config.attributedTitle = attribString
-//            config.background.backgroundColor = .black
-//            config.background.strokeWidth = 1
-//            config.background.strokeColor = .white
-//
-//            $0.configuration = config
-//        }
-        //
-        
         accuracyFilter.do {
-            $0.setAttributedTitle(NSAttributedString(string: "정확도", attributes: [.foregroundColor : UIColor.white]), for: .normal)
-            $0.backgroundColor = .black
-            $0.layer.borderColor = UIColor.white.cgColor
-            $0.layer.borderWidth = 1
-            $0.layer.cornerRadius = 8
-            $0.addAction(UIAction(handler: { _ in
-                self.callRequest(sortedBy: .sim)
-            }), for: .touchUpInside)
+            $0.configuration = makeButtonConfig(title: "정확도")
+            $0.addAction(makeUIAction(sortedBy: .sim), for: .touchUpInside)
         }
+        
         dateFilter.do {
-            $0.setAttributedTitle(NSAttributedString(string: "날짜순", attributes: [.foregroundColor : UIColor.white]), for: .normal)
-            $0.backgroundColor = .black
-            $0.layer.borderColor = UIColor.white.cgColor
-            $0.layer.borderWidth = 1
-            $0.layer.cornerRadius = 8
-            $0.addAction(UIAction(handler: { _ in
-                self.callRequest(sortedBy: .date)
-            }), for: .touchUpInside)
+            $0.configuration = makeButtonConfig(title: "날짜순")
+            $0.addAction(makeUIAction(sortedBy: .date), for: .touchUpInside)
         }
         hPriceFilter.do {
-            $0.setAttributedTitle(NSAttributedString(string: "가격높은순", attributes: [.foregroundColor : UIColor.white]), for: .normal)
-            $0.backgroundColor = .black
-            $0.layer.borderColor = UIColor.white.cgColor
-            $0.layer.borderWidth = 1
-            $0.layer.cornerRadius = 8
-            $0.addAction(UIAction(handler: { _ in
-                self.callRequest(sortedBy: .dsc)
-            }), for: .touchUpInside)
+            $0.configuration = makeButtonConfig(title: "가격높은순")
+            $0.addAction(makeUIAction(sortedBy: .dsc), for: .touchUpInside)
         }
         lPriceFilter.do {
-            $0.setAttributedTitle(NSAttributedString(string: "가격낮은순", attributes: [.foregroundColor : UIColor.white]), for: .normal)
-            $0.backgroundColor = .black
-            $0.layer.borderColor = UIColor.white.cgColor
-            $0.layer.borderWidth = 1
-            $0.layer.cornerRadius = 8
-            $0.addAction(UIAction(handler: { _ in
-                self.callRequest(sortedBy: .asc)
-            }), for: .touchUpInside)
+            $0.configuration = makeButtonConfig(title: "가격낮은순")
+            $0.addAction(makeUIAction(sortedBy: .asc), for: .touchUpInside)
         }
-        
         
         collectionView.do {
             $0.delegate = self
@@ -219,49 +148,29 @@ class ShoppingListViewController: UIViewController, ViewConfig {
         navigationController?.popViewController(animated: true)
     }
     
-    
-    func callRequest(sortedBy: SortBy) {
-        var url = requestedUrl
-        url.append(naverParams.sort.param)
-        
-        switch sortedBy {
-        case .asc:
-            url.append(sortedBy.filter)
-            break
-        case .date:
-            url.append(sortedBy.filter)
-            break
-        case .dsc:
-            url.append(sortedBy.filter)
-            break
-        case .sim:
-            url.append(sortedBy.filter)
-            break
-        }
-        
-        print(url)
-        let header: HTTPHeaders = [
-            "X-Naver-Client-Id" : APIKey.naverClientId,
-            "X-Naver-Client-Secret" : APIKey.naverClientSecret
-        ]
-        AF.request(url,
-                   method: .get,
-                   headers: header
-        )
-        .validate()
-        .responseDecodable(of: Merchandise.self) { response in
-            switch response.result {
-            case .success(let value):
-                self.shoppingItemsAndTotal = value
-            case .failure(let error):
-                print(error)
+    func makeUIAction(sortedBy: SortBy) -> UIAction {
+        return UIAction { _ in
+            ShoppingService.shared.callSearchRequest(text: self.requestedUrl, sortedBy: sortedBy) {
+                self.shoppingItemsAndTotal = $0
             }
         }
-//        .responseString { value in
-//            dump(value)
-//        }
     }
-
+    
+    func makeButtonConfig(title: String) -> UIButton.Configuration {
+        var attribString = AttributedString(title)
+        attribString.font = .systemFont(ofSize: 16)
+        
+        var config = UIButton.Configuration.plain()
+        config.attributedTitle = attribString
+        
+        // plain 버튼의 글자색은 baseForegroundColor로 변경
+        config.baseForegroundColor = .white
+        config.background.backgroundColor = .black
+        config.background.strokeWidth = 1
+        config.background.strokeColor = .white
+        
+        return config
+    }
 }
 
 extension ShoppingListViewController: UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
@@ -276,9 +185,6 @@ extension ShoppingListViewController: UICollectionViewDataSource, UICollectionVi
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: ShoppingListCollectionViewCell.id, for: indexPath) as! ShoppingListCollectionViewCell
         
         cell.config(item: item)
-//        cell.layer.borderColor = UIColor.red.cgColor
-//        cell.layer.borderWidth = 1
-//        cell.clipsToBounds = true
         
         return cell
     }
@@ -288,10 +194,6 @@ extension ShoppingListViewController: UICollectionViewDataSource, UICollectionVi
         return CGSize(
             width: Int(UIScreen.main.bounds.width - spacing * 3) / 2,
             height: Int(UIScreen.main.bounds.height) / 3)
-        
-//        return CGSize(
-//            width: 100,
-//            height: 200)
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
