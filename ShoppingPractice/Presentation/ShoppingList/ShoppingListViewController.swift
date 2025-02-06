@@ -42,13 +42,31 @@ class ShoppingListViewController: BaseViewController {
      UICollectionView must be initialized with a non-nil layout parameter
      뿜으면서 터짐
      */
+    
+    
+    let resultCntLabel = UILabel()
+    let collectionView = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout())
+    let filterStack = UIStackView()
+    let accuracyFilter = UIButton()
+    let dateFilter = UIButton()
+    let hPriceFilter = UIButton()
+    let lPriceFilter = UIButton()
+    var lastFilter: SortBy = .sim
+    var lastSearched = ""
 
-    override var shoppingItemsAndTotal: Merchandise {
+    var shoppingItemsAndTotal: Merchandise = Merchandise(total: 0, items: [MerchandiseInfo]()) {
         didSet {
             collectionView.reloadData()
         }
     }
     
+    var currentPage: Int {
+        return shoppingItemsAndTotal.items.count
+    }
+    var page = 1
+    
+    let spacing: CGFloat = 12
+    var buttonsState = Array(repeating: false, count: 4)
     // display를 30으로 두고, currentPage가 28일 떄 프리패치 실행하는 전략
     
     override func viewDidLoad() {
@@ -124,11 +142,25 @@ class ShoppingListViewController: BaseViewController {
             $0.register(ShoppingListCollectionViewCell.self, forCellWithReuseIdentifier: ShoppingListCollectionViewCell.id)
         }
     }
+    func makeUIAction(sortedBy: SortBy) -> UIAction {
+        return UIAction { _ in
+            self.collectionView.scrollToItem(at: IndexPath(row: 0, section: 0), at: .top, animated: true)
+            
+            if self.lastFilter == sortedBy {
+                return
+            } else {
+                ShoppingService.shared.callSearchRequest(text: self.lastSearched, sortedBy: sortedBy) {
+                    self.shoppingItemsAndTotal = $0
+                }
+                self.lastFilter = sortedBy
+            }
+        }
+    }
+    
 }
 
 extension ShoppingListViewController: UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        print(#function, shoppingItemsAndTotal.items.count)
         return shoppingItemsAndTotal.items.count
     }
     
