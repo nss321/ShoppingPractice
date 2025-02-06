@@ -69,20 +69,13 @@ class ShoppingListViewController: BaseViewController {
     var buttonsState = Array(repeating: false, count: 4)
     // display를 30으로 두고, currentPage가 28일 떄 프리패치 실행하는 전략
     
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        configNavigation()
-        self.navigationController?.interactivePopGestureRecognizer?.isEnabled = true
-        self.navigationController?.interactivePopGestureRecognizer?.delegate = self
-    }
-    
-    override func configureHierarchy() {
+    override func configHierarchy() {
         print(#function)
         [resultCntLabel, filterStack, collectionView].forEach { view.addSubview($0) }
         [accuracyFilter, dateFilter, hPriceFilter, lPriceFilter].forEach { filterStack.addArrangedSubview($0) }
     }
     
-    override func configureLayout() {
+    override func configLayout() {
         print(#function)
         resultCntLabel.snp.makeConstraints {
             $0.top.equalTo(view.safeAreaLayoutGuide).offset(12)
@@ -102,7 +95,7 @@ class ShoppingListViewController: BaseViewController {
         }
     }
     
-    override func configureView() {
+    override func configView() {
         resultCntLabel.do {
             let formatter = NumberFormatter().then { $0.numberStyle = .decimal }
             let totalResult = formatter.string(for: shoppingItemsAndTotal.total)
@@ -142,19 +135,15 @@ class ShoppingListViewController: BaseViewController {
             $0.register(ShoppingListCollectionViewCell.self, forCellWithReuseIdentifier: ShoppingListCollectionViewCell.id)
         }
     }
-    func makeUIAction(sortedBy: SortBy) -> UIAction {
-        return UIAction { _ in
-            self.collectionView.scrollToItem(at: IndexPath(row: 0, section: 0), at: .top, animated: true)
-            
-            if self.lastFilter == sortedBy {
-                return
-            } else {
-                ShoppingService.shared.callSearchRequest(text: self.lastSearched, sortedBy: sortedBy) {
-                    self.shoppingItemsAndTotal = $0
-                }
-                self.lastFilter = sortedBy
-            }
-        }
+    
+    override func configNavigation() {
+        self.navigationItem.leftBarButtonItem = UIBarButtonItem(
+            image: UIImage(systemName: "chevron.left")!.withTintColor(.white, renderingMode: .alwaysOriginal),
+            style: .plain,
+            target: self,
+            action: #selector(popThisViewController))
+        self.navigationController?.interactivePopGestureRecognizer?.isEnabled = true
+        self.navigationController?.interactivePopGestureRecognizer?.delegate = self
     }
     
 }
@@ -220,5 +209,45 @@ extension ShoppingListViewController: UIGestureRecognizerDelegate {
         
         print(navigationController?.viewControllers.count ?? 0 )
         return navigationController?.viewControllers.count ?? 0 > 1
+    }
+}
+
+extension ShoppingListViewController {
+    
+    func makeUIAction(sortedBy: SortBy) -> UIAction {
+        return UIAction { _ in
+            self.collectionView.scrollToItem(at: IndexPath(row: 0, section: 0), at: .top, animated: true)
+            
+            if self.lastFilter == sortedBy {
+                return
+            } else {
+                ShoppingService.shared.callSearchRequest(text: self.lastSearched, sortedBy: sortedBy) {
+                    self.shoppingItemsAndTotal = $0
+                }
+                self.lastFilter = sortedBy
+            }
+        }
+    }
+    
+    func makeButtonConfig(title: String) -> UIButton.Configuration {
+        var attribString = AttributedString(title)
+        attribString.font = .systemFont(ofSize: 16)
+        
+        var config = UIButton.Configuration.plain()
+        config.attributedTitle = attribString
+        
+        // plain 버튼의 글자색은 baseForegroundColor로 변경
+        config.baseForegroundColor = .white
+        config.background.backgroundColor = .black
+        config.background.strokeWidth = 1
+        config.background.strokeColor = .white
+        
+        return config
+    }
+    
+    @objc
+    func popThisViewController(_ sender: UIBarButtonItem) {
+        print(#function)
+        navigationController?.popViewController(animated: true)
     }
 }

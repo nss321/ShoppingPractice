@@ -10,3 +10,10 @@ protocol ViewConfig {
     func configLayout()
     func configView()
 }
+
+extension ViewConfig where Self: BaseViewController {
+    func configBackgroundColor() {
+        print(#function, "extension")
+        view.backgroundColor = .systemBackground
+    }
+}

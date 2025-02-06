@@ -20,11 +20,11 @@ class SearchViewController: BaseViewController {
         bind()
     }
     
-    override func configureHierarchy() {
+    override func configHierarchy() {
         view.addSubview(searchBar)
     }
     
-    override func configureLayout() {
+    override func configLayout() {
         searchBar.snp.makeConstraints {
             $0.top.equalTo(view.safeAreaLayoutGuide).offset(20)
             $0.horizontalEdges.equalToSuperview()
@@ -32,7 +32,7 @@ class SearchViewController: BaseViewController {
         }
     }
     
-    override func configureView() {
+    override func configView() {
         searchBar.delegate = self
         searchBar.placeholder = "검색하세요."
     }
