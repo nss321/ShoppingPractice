@@ -14,10 +14,10 @@ final class SearchViewModel {
     let outputAlert: Observable<UIAlertController?> = Observable(nil)
     
     // cache
-    let items = Merchandise(total: 0, items: [MerchandiseInfo]())
+    var items = Merchandise(total: 0, items: [MerchandiseInfo]())
     
     init() {
-        inputSearchText.bind { [weak self] text in
+        inputSearchText.lazyBind { [weak self] text in
             self?.checkValid(text: text)
         }
     }
@@ -48,8 +48,10 @@ final class SearchViewModel {
     }
     
     private func callRequest(text: String) {
-        ShoppingService.shared.callSearchRequest(text: text) { [weak self] response in
+        print(#function, "서치바 엔터 후 호출")
+        ShoppingService.shared.callSearchReQuest(api: .basic(keyword: text), type: Merchandise.self) { [weak self] response in
             self?.outputShoppingList.value = response
+            self?.items = response
         }
     }
     

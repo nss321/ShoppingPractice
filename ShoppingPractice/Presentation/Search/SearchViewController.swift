@@ -47,7 +47,6 @@ class SearchViewController: BaseViewController {
     }
     
     func pushShoppingListViewController(items: Merchandise?, navTitle: String?) {
-        print(#function)
         let vc = ShoppingListViewController()
         
         guard let items else {
@@ -56,8 +55,8 @@ class SearchViewController: BaseViewController {
             return
         }
         
-        vc.shoppingItemsAndTotal = items
-        vc.lastSearched = viewModel.lastSearched
+        vc.viewModel.lastSearched = viewModel.lastSearched
+        vc.viewModel.inputShoppingList.value = items
         vc.navigationItem.titleView = UILabel().then {
             $0.text = navTitle
             $0.font = .systemFont(ofSize: 16, weight: .black)
@@ -71,7 +70,6 @@ extension SearchViewController: UISearchBarDelegate {
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
         print(#function,"입력된 문자열(\(searchBar.text!)")
         view.endEditing(true)
-        
         viewModel.inputSearchText.value = searchBar.text
     }
 }
