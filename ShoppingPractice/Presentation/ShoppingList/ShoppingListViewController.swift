@@ -26,17 +26,12 @@ final class ShoppingListViewController: BaseViewController {
     let viewModel = ShoppingListViewModel()
     
     override func bind() {
-//        viewModel.outputShoppingList.bind { [weak self] _ in
-//            self?.collectionView.reloadData()
-//        }
-//        viewModel.outputTotalCount.bind { [weak self] total in
-//            self?.resultCntLabel.text = "\(total) 개의 검색 결과"
-//        }
-//        viewModel.outputIsSorted.bind { [weak self] _ in
-//            self?.collectionView.scrollToItem(at: IndexPath(row: 0, section: 0), at: .top, animated: true)
-//        }
-        
-        let input = ShoppingListViewModel.Input()
+        let input = ShoppingListViewModel.Input(
+            simFilter: accuracyFilter.rx.tap,
+            dateFilter: dateFilter.rx.tap,
+            dscFilter: hPriceFilter.rx.tap,
+            ascFilter: lPriceFilter.rx.tap
+        )
         let output = viewModel.transform(input: input)
         
         output.navTitle
@@ -51,7 +46,25 @@ final class ShoppingListViewController: BaseViewController {
             }
             .disposed(by: disposeBag)
 
+        output.totalNumber
+            .compactMap { $0 }
+            .map { "\($0) 개의 검색 결과" }
+            .drive(resultCntLabel.rx.text)
+            .disposed(by: disposeBag)
         
+        [
+            accuracyFilter.rx.tap,
+            dateFilter.rx.tap,
+            hPriceFilter.rx.tap,
+            lPriceFilter.rx.tap
+        ]
+            .forEach { tap in
+                tap
+                    .bind(with: self, onNext: { owner, _ in
+                        owner.collectionView.scrollToItem(at: IndexPath(row: 0, section: 0), at: .top, animated: true)
+                    })
+                    .disposed(by: disposeBag)
+            }
     }
     
     override func configLayout() {
@@ -68,7 +81,7 @@ final class ShoppingListViewController: BaseViewController {
             $0.height.equalTo(32)
         }
         collectionView.snp.makeConstraints {
-            $0.top.equalTo(filterStack.snp.bottom).offset(4)
+            $0.top.equalTo(filterStack.snp.bottom).offset(viewModel.spacing)
             $0.horizontalEdges.equalToSuperview().inset(viewModel.spacing)
             $0.bottom.equalToSuperview()
         }
@@ -86,36 +99,16 @@ final class ShoppingListViewController: BaseViewController {
             $0.distribution = .fillProportionally
         }
         
-        accuracyFilter.do {
-            $0.configuration = UIButton.Configuration.sortButtonStyle(title: "정확도")
-            $0.addAction(UIAction(handler: { [weak self] _ in
-                self?.viewModel.inputSortButtonTapped.value = .sim
-            }), for: .touchUpInside)
-        }
-        
-        dateFilter.do {
-            $0.configuration = UIButton.Configuration.sortButtonStyle(title: "날짜순")
-            $0.addAction(UIAction(handler: { [weak self] _ in
-                self?.viewModel.inputSortButtonTapped.value = .date
-            }), for: .touchUpInside)
-        }
-        hPriceFilter.do {
-            $0.configuration = UIButton.Configuration.sortButtonStyle(title: "가격높은순")
-            $0.addAction(UIAction(handler: { [weak self] _ in
-                self?.viewModel.inputSortButtonTapped.value = .dsc
-            }), for: .touchUpInside)
-        }
-        lPriceFilter.do {
-            $0.configuration = UIButton.Configuration.sortButtonStyle(title: "가격낮은순")
-            $0.addAction(UIAction(handler: { [weak self] _ in
-                self?.viewModel.inputSortButtonTapped.value = .asc
-            }), for: .touchUpInside)
-        }
+        [
+            (accuracyFilter, "정확도"),
+            (dateFilter, "날짜순"),
+            (hPriceFilter, "가격높은순"),
+            (lPriceFilter, "가격낮은순")
+        ]
+            .forEach { $0.configuration = .sortButtonStyle(title: $1) }
         
         collectionView.do {
             $0.backgroundColor = .clear
-//            $0.delegate = self
-//            $0.dataSource = self
 //            $0.prefetchDataSource = self
             $0.register(ShoppingListCollectionViewCell.self, forCellWithReuseIdentifier: ShoppingListCollectionViewCell.id)
         }
@@ -133,35 +126,6 @@ final class ShoppingListViewController: BaseViewController {
     }
 }
 
-//extension ShoppingListViewController: UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
-//    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-//        return viewModel.outputShoppingList.value.count
-//    }
-//    
-//    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-//        let item = viewModel.outputShoppingList.value[indexPath.item]
-//        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: ShoppingListCollectionViewCell.id, for: indexPath) as! ShoppingListCollectionViewCell
-//        cell.config(item: item)
-//        cell.clipsToBounds = true
-//        cell.layer.cornerRadius = 12
-//        return cell
-//    }
-//    
-//    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-//        return CGSize(
-//            width: Int(UIScreen.main.bounds.width - viewModel.spacing * 3) / 2,
-//            height: Int(UIScreen.main.bounds.height) / 3)
-//    }
-//    
-//    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
-//        viewModel.spacing
-//    }
-//    
-//    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
-//        viewModel.spacing
-//    }
-//}
-//
 //extension ShoppingListViewController: UICollectionViewDataSourcePrefetching {
 //    func collectionView(_ collectionView: UICollectionView, prefetchItemsAt indexPaths: [IndexPath]) {
 ////        print(#function, "프리패칭 호출!!!")
@@ -176,13 +140,14 @@ final class ShoppingListViewController: BaseViewController {
 //    }
 //}
 
+// MARK: UIGestureReconizerDelegate
 extension ShoppingListViewController: UIGestureRecognizerDelegate {
     func gestureRecognizerShouldBegin(_ gestureRecognizer: UIGestureRecognizer) -> Bool {
         return navigationController?.viewControllers.count ?? 0 > 1
     }
 }
 
-
+// MARK: Extension
 extension ShoppingListViewController {
    private func layout() -> UICollectionViewFlowLayout {
        let layout = UICollectionViewFlowLayout()

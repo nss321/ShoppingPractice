@@ -17,36 +17,64 @@ final class ShoppingListViewModel: ViewModel {
     private let disposeBag = DisposeBag()
     
     struct Input {
-        
+        let simFilter: ControlEvent<Void>
+        let dateFilter: ControlEvent<Void>
+        let dscFilter: ControlEvent<Void>
+        let ascFilter: ControlEvent<Void>
     }
     
     struct Output {
         let navTitle: Driver<String>
         let searchResult: Driver<[MerchandiseInfo]>
+        let totalNumber: Driver<String?>
     }
     
     func transform(input: Input) -> Output {
         let result = PublishRelay<[MerchandiseInfo]>()
+        let totalNumber = PublishRelay<String?>()
         
         searchKeyword
-//            .map({ String in
-//                print(self, String)
-//            })
-//            .flatMap { keyword in
-//                 
-//            }
+            .flatMap { keyword in
+                ShoppingService.shared.callSearchAPI(api: .sorted(keyword: keyword, sortby: .sim, startAt: 1), type: Merchandise.self)
+            }
             .bind(with: self) { owner, value in
-                ShoppingService.shared.callSearchAPI(api: .basic(keyword: value), type: Merchandise.self) { response in
-//                    dump(response.items)
+                switch value {
+                case .success(let response):
                     result.accept(response.items)
+                    totalNumber.accept(owner.configTotalCount(total: response.total))
+                case .failure(let error):
+                    print(error)
                 }
-                // result는 네트워크 요청의 응답임
-//                result.accept(keyword)
             }
             .disposed(by: disposeBag)
         
+        [
+            (input.simFilter, SortBy.sim),
+            (input.dateFilter, SortBy.date),
+            (input.dscFilter, SortBy.dsc),
+            (input.ascFilter, SortBy.asc)
+        ]
+            .forEach { tap, sort in
+                tap
+                    .withLatestFrom(searchKeyword)
+                    .flatMap {
+                        ShoppingService.shared.callSearchAPI(api: .sorted(keyword: $0, sortby: sort, startAt: 1), type: Merchandise.self)
+                    }
+                    .bind(with: self) { owner, value in
+                        switch value {
+                        case .success(let response):
+                            result.accept(response.items)
+                            totalNumber.accept(owner.configTotalCount(total: response.total))
+                        case .failure(let error):
+                            print(error)
+                        }
+                    }
+                    .disposed(by: disposeBag)
+            }
+        
         return Output(navTitle: searchKeyword.asDriver(),
-                      searchResult: result.asDriver(onErrorDriveWith: .empty())
+                      searchResult: result.asDriver(onErrorDriveWith: .empty()),
+                      totalNumber: totalNumber.asDriver(onErrorDriveWith: .empty())
         )
     }
     
