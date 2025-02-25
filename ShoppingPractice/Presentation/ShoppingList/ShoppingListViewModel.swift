@@ -22,24 +22,23 @@ final class ShoppingListViewModel: ViewModel {
     
     struct Output {
         let navTitle: Driver<String>
-        let searchResult: Driver<Merchandise>
+        let searchResult: Driver<[MerchandiseInfo]>
     }
     
     func transform(input: Input) -> Output {
-        let result = PublishRelay<Merchandise>()
+        let result = PublishRelay<[MerchandiseInfo]>()
         
         searchKeyword
-            .distinctUntilChanged()
 //            .map({ String in
 //                print(self, String)
 //            })
 //            .flatMap { keyword in
-                // TODO: 네트워크 요청하기
+//                 
 //            }
-            .bind(with: self) { owner, result in
-                
-                ShoppingService.shared.callSearchAPI(api: .basic(keyword: result), type: Merchandise.self) { response in
-                    dump(response.items)
+            .bind(with: self) { owner, value in
+                ShoppingService.shared.callSearchAPI(api: .basic(keyword: value), type: Merchandise.self) { response in
+//                    dump(response.items)
+                    result.accept(response.items)
                 }
                 // result는 네트워크 요청의 응답임
 //                result.accept(keyword)

@@ -16,7 +16,7 @@ import Then
 final class ShoppingListViewController: BaseViewController {
     
     private let resultCntLabel = UILabel()
-    private let collectionView = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout())
+    private lazy var collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout())
     private let filterStack = UIStackView()
     private let accuracyFilter = UIButton()
     private let dateFilter = UIButton()
@@ -42,6 +42,15 @@ final class ShoppingListViewController: BaseViewController {
         output.navTitle
             .drive(navigationItem.rx.title)
             .disposed(by: disposeBag)
+        
+        output.searchResult
+            .drive(collectionView.rx.items(cellIdentifier: ShoppingListCollectionViewCell.id, cellType: ShoppingListCollectionViewCell.self))  { row, element, cell in
+                cell.config(item: element)
+                cell.clipsToBounds = true
+                cell.layer.cornerRadius = 12
+            }
+            .disposed(by: disposeBag)
+
         
     }
     
@@ -105,9 +114,9 @@ final class ShoppingListViewController: BaseViewController {
         
         collectionView.do {
             $0.backgroundColor = .clear
-            $0.delegate = self
-            $0.dataSource = self
-            $0.prefetchDataSource = self
+//            $0.delegate = self
+//            $0.dataSource = self
+//            $0.prefetchDataSource = self
             $0.register(ShoppingListCollectionViewCell.self, forCellWithReuseIdentifier: ShoppingListCollectionViewCell.id)
         }
     }
@@ -124,48 +133,48 @@ final class ShoppingListViewController: BaseViewController {
     }
 }
 
-extension ShoppingListViewController: UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
-    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return viewModel.outputShoppingList.value.count
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let item = viewModel.outputShoppingList.value[indexPath.item]
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: ShoppingListCollectionViewCell.id, for: indexPath) as! ShoppingListCollectionViewCell
-        cell.config(item: item)
-        cell.clipsToBounds = true
-        cell.layer.cornerRadius = 12
-        return cell
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        return CGSize(
-            width: Int(UIScreen.main.bounds.width - viewModel.spacing * 3) / 2,
-            height: Int(UIScreen.main.bounds.height) / 3)
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
-        viewModel.spacing
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
-        viewModel.spacing
-    }
-}
-
-extension ShoppingListViewController: UICollectionViewDataSourcePrefetching {
-    func collectionView(_ collectionView: UICollectionView, prefetchItemsAt indexPaths: [IndexPath]) {
-//        print(#function, "프리패칭 호출!!!")
-        for item in indexPaths {
-            if viewModel.currentPage - 3 == item.row {
-                // 프리페칭
-                // 마지막 검색어, 마지막 필터, 현재 페이지를 startAt으로 30개를 더 가져옴
-                // 가져온 30개를 기존 데이터 outputShoppingList에 붙임.
-                viewModel.inputPrefetching.value = ()
-            }
-        }
-    }
-}
+//extension ShoppingListViewController: UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
+//    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+//        return viewModel.outputShoppingList.value.count
+//    }
+//    
+//    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+//        let item = viewModel.outputShoppingList.value[indexPath.item]
+//        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: ShoppingListCollectionViewCell.id, for: indexPath) as! ShoppingListCollectionViewCell
+//        cell.config(item: item)
+//        cell.clipsToBounds = true
+//        cell.layer.cornerRadius = 12
+//        return cell
+//    }
+//    
+//    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+//        return CGSize(
+//            width: Int(UIScreen.main.bounds.width - viewModel.spacing * 3) / 2,
+//            height: Int(UIScreen.main.bounds.height) / 3)
+//    }
+//    
+//    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
+//        viewModel.spacing
+//    }
+//    
+//    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
+//        viewModel.spacing
+//    }
+//}
+//
+//extension ShoppingListViewController: UICollectionViewDataSourcePrefetching {
+//    func collectionView(_ collectionView: UICollectionView, prefetchItemsAt indexPaths: [IndexPath]) {
+////        print(#function, "프리패칭 호출!!!")
+//        for item in indexPaths {
+//            if viewModel.currentPage - 3 == item.row {
+//                // 프리페칭
+//                // 마지막 검색어, 마지막 필터, 현재 페이지를 startAt으로 30개를 더 가져옴
+//                // 가져온 30개를 기존 데이터 outputShoppingList에 붙임.
+//                viewModel.inputPrefetching.value = ()
+//            }
+//        }
+//    }
+//}
 
 extension ShoppingListViewController: UIGestureRecognizerDelegate {
     func gestureRecognizerShouldBegin(_ gestureRecognizer: UIGestureRecognizer) -> Bool {
@@ -173,3 +182,16 @@ extension ShoppingListViewController: UIGestureRecognizerDelegate {
     }
 }
 
+
+extension ShoppingListViewController {
+   private func layout() -> UICollectionViewFlowLayout {
+       let layout = UICollectionViewFlowLayout()
+       layout.itemSize = CGSize(
+        width: Int(UIScreen.main.bounds.width - viewModel.spacing * 3) / 2,
+        height: Int(UIScreen.main.bounds.height) / 3)
+       layout.scrollDirection = .vertical
+       layout.minimumLineSpacing = viewModel.spacing
+       layout.minimumInteritemSpacing = viewModel.spacing
+       return layout
+   }
+}

@@ -64,8 +64,16 @@ class ShoppingService {
     func callSearchAPI<T: Decodable>(api: SearchRequest, type: T.Type, completion: @escaping(T) -> Void) {
         AF.request(api.endpoint,
                    method: api.method,
-                   headers: api.header)
+                   headers: api.header) { request in
+            // 반복적인 네트워크 요청을 줄이기 위해서 사용
+            // Device Network Condtion을 very poor로 두고 테스트 했을때 의도한 대로 동작
+            // 캐시된 데이터를 뱉어도 스테이터스 코드는 200을 밷는다??
+            // 응답 전체를 캐싱해서 그럴까?
+            // TODO: 네트워크 요청이 길어질 때 처리(10초, 30초 등)
+            request.cachePolicy = .returnCacheDataElseLoad
+        }
         .responseDecodable(of: T.self) { response in
+//            print(response.response?.statusCode)
             switch response.result {
             case .success(let value):
                 completion(value)
