@@ -28,7 +28,7 @@ final class ShoppingListViewController: BaseViewController {
         bind()
     }
     
-    private func bind() {
+    internal override func bind() {
         viewModel.outputShoppingList.bind { [weak self] _ in
             self?.collectionView.reloadData()
         }
@@ -111,7 +111,7 @@ final class ShoppingListViewController: BaseViewController {
     
     override func configNavigation() {
         self.navigationItem.leftBarButtonItem = UIBarButtonItem(
-            image: UIImage(systemName: "chevron.left")!.withTintColor(.white, renderingMode: .alwaysOriginal),
+            image: UIImage(systemName: "chevron.left")!.withTintColor(.label, renderingMode: .alwaysOriginal),
             primaryAction: UIAction(handler: { [weak self] _ in
                 self?.navigationController?.popViewController(animated: true)
             })

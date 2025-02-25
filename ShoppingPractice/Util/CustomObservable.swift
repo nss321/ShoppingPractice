@@ -5,7 +5,7 @@
 //  Created by BAE on 2/6/25.
 //
 
-final class Observable<T> {
+final class CustomObservable<T> {
     var value: T {
         didSet {
             closure?(value)

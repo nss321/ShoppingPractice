@@ -7,18 +7,26 @@
 
 import UIKit
 
+import RxSwift
+import RxCocoa
 import SnapKit
 import Then
-
+/*
+ 1. 서치바 입력, 텍스트 전달
+ 2. 유효성 검증
+ 3. 적절하지 않다면?
+    3-1. 얼럿 표시
+ 4. 적절하다면?
+    4-1. 네트워크 요청
+ 5. 화면전환
+ 
+ 
+ 
+ */
 final class SearchViewController: BaseViewController {
     
     private let searchBar = UISearchBar()
     private let viewModel = SearchViewModel()
-    
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        bind()
-    }
     
     override func configHierarchy() {
         view.addSubview(searchBar)
@@ -33,25 +41,42 @@ final class SearchViewController: BaseViewController {
     }
     
     override func configView() {
-        searchBar.delegate = self
+//        searchBar.delegate = self
         searchBar.placeholder = "검색하세요."
     }
     
-    private func bind() {
-        viewModel.outputShoppingList.lazyBind { [weak self] response in
-            self?.pushShoppingListViewController(items: response, navTitle: self?.searchBar.text)
-        }
-        viewModel.outputAlert.lazyBind { [weak self] alert in
-            self?.present(alert!, animated: true)
-        }
+    override func bind() {
+        let input = SearchViewModel.Input(
+            searchButtonClick: searchBar.rx.searchButtonClicked,
+            searchKeyword: searchBar.rx.text.orEmpty
+        )
+        
+        let output = viewModel.transform(input: input)
+        
+        output.alertMessage
+            .drive(with: self) { owner, value in
+                AlertManager.shared.showSimpleAlert(title: "검색어", message: value)
+            } onCompleted: { owner in
+                print("onCompleted")
+            } onDisposed: { owner in
+                print("onDisposed")
+            }
+            .disposed(by: disposeBag)
+
+        
+//        viewModel.outputShoppingList.lazyBind { [weak self] response in
+//            self?.pushShoppingListViewController(items: response, navTitle: self?.searchBar.text)
+//        }
+//        viewModel.outputAlert.lazyBind { [weak self] alert in
+//            self?.present(alert!, animated: true)
+//        }
     }
     
     private func pushShoppingListViewController(items: Merchandise?, navTitle: String?) {
         let vc = ShoppingListViewController()
         
         guard let items else {
-            let alert = AlertManager.shared.showSimpleAlert(title: "경고!", message: "failed to unwrapping items")
-            present(alert, animated: true)
+            AlertManager.shared.showSimpleAlert(title: "경고!", message: "failed to unwrapping items")
             return
         }
         
@@ -64,12 +89,12 @@ final class SearchViewController: BaseViewController {
         navigationController?.pushViewController(vc, animated: true)
     }
 }
-
-extension SearchViewController: UISearchBarDelegate {
-    
-    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
-        print(#function,"입력된 문자열(\(searchBar.text!)")
-        view.endEditing(true)
-        viewModel.inputSearchText.value = searchBar.text
-    }
-}
+//
+//extension SearchViewController: UISearchBarDelegate {
+//    
+//    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+//        print(#function,"입력된 문자열(\(searchBar.text!)")
+//        view.endEditing(true)
+//        viewModel.inputSearchText.value = searchBar.text
+//    }
+//}

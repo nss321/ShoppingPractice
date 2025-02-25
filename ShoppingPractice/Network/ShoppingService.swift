@@ -61,4 +61,22 @@ class ShoppingService {
             }
         }
     }
+    func callSearchAPI<T: Decodable>(api: SearchRequest, type: T.Type, completion: @escaping(T) -> Void) {
+        AF.request(api.endpoint,
+                   method: api.method,
+                   headers: api.header)
+        .responseDecodable(of: T.self) { response in
+            switch response.result {
+            case .success(let value):
+                completion(value)
+                break
+            case .failure(let error):
+                dump(error)
+            }
+        }
+        
+        
+    }
+    
+    
 }

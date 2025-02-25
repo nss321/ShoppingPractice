@@ -12,10 +12,14 @@ final class AlertManager {
     
     private init() { }
     
-    func showSimpleAlert(title: String, message: String) -> UIAlertController {
+    private func root() -> UIViewController {
+        UIApplication.shared.keyWindow!.rootViewController!
+    }
+    
+    func showSimpleAlert(title: String, message: String) {
         let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
         let ok = UIAlertAction(title: "확인", style: .default)
         alert.addAction(ok)
-        return alert
+        root().present(alert, animated: true)
     }
 }

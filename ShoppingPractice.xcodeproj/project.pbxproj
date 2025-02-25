@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		1193B7C42D6D7F9200326E2E /* RxCocoa in Frameworks */ = {isa = PBXBuildFile; productRef = 1193B7C32D6D7F9200326E2E /* RxCocoa */; };
 		11E366D42D378260008C1E04 /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = 11E366D32D378260008C1E04 /* Alamofire */; };
 		11E366D72D378291008C1E04 /* SnapKit in Frameworks */ = {isa = PBXBuildFile; productRef = 11E366D62D378291008C1E04 /* SnapKit */; };
 		11E366DA2D37829E008C1E04 /* Then in Frameworks */ = {isa = PBXBuildFile; productRef = 11E366D92D37829E008C1E04 /* Then */; };
@@ -46,6 +47,7 @@
 			files = (
 				11E366DD2D3782B1008C1E04 /* Kingfisher in Frameworks */,
 				11E366D42D378260008C1E04 /* Alamofire in Frameworks */,
+				1193B7C42D6D7F9200326E2E /* RxCocoa in Frameworks */,
 				11E366DA2D37829E008C1E04 /* Then in Frameworks */,
 				11E366D72D378291008C1E04 /* SnapKit in Frameworks */,
 			);
@@ -95,6 +97,7 @@
 				11E366D62D378291008C1E04 /* SnapKit */,
 				11E366D92D37829E008C1E04 /* Then */,
 				11E366DC2D3782B1008C1E04 /* Kingfisher */,
+				1193B7C32D6D7F9200326E2E /* RxCocoa */,
 			);
 			productName = ShoppingPractice;
 			productReference = 11E366A42D377942008C1E04 /* ShoppingPractice.app */;
@@ -129,6 +132,7 @@
 				11E366D52D378291008C1E04 /* XCRemoteSwiftPackageReference "SnapKit" */,
 				11E366D82D37829E008C1E04 /* XCRemoteSwiftPackageReference "Then" */,
 				11E366DB2D3782B1008C1E04 /* XCRemoteSwiftPackageReference "Kingfisher" */,
+				1193B7C22D6D7F9200326E2E /* XCRemoteSwiftPackageReference "RxSwift" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 11E366A52D377942008C1E04 /* Products */;
@@ -364,6 +368,14 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		1193B7C22D6D7F9200326E2E /* XCRemoteSwiftPackageReference "RxSwift" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/ReactiveX/RxSwift.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 6.9.0;
+			};
+		};
 		11E366D22D378260008C1E04 /* XCRemoteSwiftPackageReference "Alamofire" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/Alamofire/Alamofire";
@@ -399,6 +411,11 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		1193B7C32D6D7F9200326E2E /* RxCocoa */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 1193B7C22D6D7F9200326E2E /* XCRemoteSwiftPackageReference "RxSwift" */;
+			productName = RxCocoa;
+		};
 		11E366D32D378260008C1E04 /* Alamofire */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 11E366D22D378260008C1E04 /* XCRemoteSwiftPackageReference "Alamofire" */;

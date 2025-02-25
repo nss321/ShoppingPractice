@@ -19,14 +19,14 @@ final class ShoppingListViewModel {
     }
     
     // MARK: - observed properties
-    let inputSearchText: Observable<String?> = Observable(nil)
-    let inputShoppingList: Observable<Merchandise?> = Observable(nil)
-    let inputPrefetching: Observable<Void?> = Observable(())
-    let inputSortButtonTapped: Observable<SortBy?> = Observable(nil)
+    let inputSearchText: CustomObservable<String?> = CustomObservable(nil)
+    let inputShoppingList: CustomObservable<Merchandise?> = CustomObservable(nil)
+    let inputPrefetching: CustomObservable<Void?> = CustomObservable(())
+    let inputSortButtonTapped: CustomObservable<SortBy?> = CustomObservable(nil)
     
-    let outputShoppingList: Observable<[MerchandiseInfo]> = Observable([])
-    let outputTotalCount = Observable("")
-    var outputIsSorted = Observable(false)
+    let outputShoppingList: CustomObservable<[MerchandiseInfo]> = CustomObservable([])
+    let outputTotalCount = CustomObservable("")
+    var outputIsSorted = CustomObservable(false)
     
     init() {
         inputShoppingList.bind { [weak self] response in

@@ -6,19 +6,27 @@
 //
 
 import UIKit
+
+import RxSwift
 import SnapKit
 import Then
 
+
 class BaseViewController: UIViewController, ViewConfig {
+    
+    let disposeBag = DisposeBag()
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        bind()
         configHierarchy()
         configLayout()
         configView()
         configNavigation()
         configBackgroundColor()
     }
+    
+    func bind() { }
     
     func configHierarchy() { }
     
@@ -27,4 +35,5 @@ class BaseViewController: UIViewController, ViewConfig {
     func configView() { }
     
     func configNavigation() { }
+    
 }
