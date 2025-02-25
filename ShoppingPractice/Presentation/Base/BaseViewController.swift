@@ -19,7 +19,6 @@ class BaseViewController: UIViewController, ViewConfig {
     override func viewDidLoad() {
         super.viewDidLoad()
         bind()
-        configHierarchy()
         configLayout()
         configView()
         configNavigation()
@@ -27,8 +26,6 @@ class BaseViewController: UIViewController, ViewConfig {
     }
     
     func bind() { }
-    
-    func configHierarchy() { }
     
     func configLayout() { }
     

@@ -7,6 +7,8 @@
 
 import UIKit
 
+import RxSwift
+import RxCocoa
 import SnapKit
 import Then
 
@@ -23,29 +25,30 @@ final class ShoppingListViewController: BaseViewController {
     
     let viewModel = ShoppingListViewModel()
     
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        bind()
-    }
-    
-    internal override func bind() {
-        viewModel.outputShoppingList.bind { [weak self] _ in
-            self?.collectionView.reloadData()
-        }
-        viewModel.outputTotalCount.bind { [weak self] total in
-            self?.resultCntLabel.text = "\(total) 개의 검색 결과"
-        }
-        viewModel.outputIsSorted.bind { [weak self] _ in
-            self?.collectionView.scrollToItem(at: IndexPath(row: 0, section: 0), at: .top, animated: true)
-        }
-    }
-    
-    override func configHierarchy() {
-        [resultCntLabel, filterStack, collectionView].forEach { view.addSubview($0) }
-        [accuracyFilter, dateFilter, hPriceFilter, lPriceFilter].forEach { filterStack.addArrangedSubview($0) }
+    override func bind() {
+//        viewModel.outputShoppingList.bind { [weak self] _ in
+//            self?.collectionView.reloadData()
+//        }
+//        viewModel.outputTotalCount.bind { [weak self] total in
+//            self?.resultCntLabel.text = "\(total) 개의 검색 결과"
+//        }
+//        viewModel.outputIsSorted.bind { [weak self] _ in
+//            self?.collectionView.scrollToItem(at: IndexPath(row: 0, section: 0), at: .top, animated: true)
+//        }
+        
+        let input = ShoppingListViewModel.Input()
+        let output = viewModel.transform(input: input)
+        
+        output.navTitle
+            .drive(navigationItem.rx.title)
+            .disposed(by: disposeBag)
+        
     }
     
     override func configLayout() {
+        [resultCntLabel, filterStack, collectionView].forEach { view.addSubview($0) }
+        [accuracyFilter, dateFilter, hPriceFilter, lPriceFilter].forEach { filterStack.addArrangedSubview($0) }
+        
         resultCntLabel.snp.makeConstraints {
             $0.top.equalTo(view.safeAreaLayoutGuide).offset(viewModel.spacing)
             $0.leading.equalToSuperview().inset(viewModel.spacing)

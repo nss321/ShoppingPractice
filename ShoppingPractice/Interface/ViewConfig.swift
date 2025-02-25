@@ -6,7 +6,6 @@
 //
 
 protocol ViewConfig {
-    func configHierarchy()
     func configLayout()
     func configView()
 }

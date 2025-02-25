@@ -10,7 +10,7 @@ import UIKit
 import RxSwift
 import RxCocoa
 import SnapKit
-import Then
+
 /*
  1. 서치바 입력, 텍스트 전달
  2. 유효성 검증
@@ -19,20 +19,15 @@ import Then
  4. 적절하다면?
     4-1. 네트워크 요청
  5. 화면전환
- 
- 
- 
  */
+
 final class SearchViewController: BaseViewController {
     
     private let searchBar = UISearchBar()
     private let viewModel = SearchViewModel()
     
-    override func configHierarchy() {
-        view.addSubview(searchBar)
-    }
-    
     override func configLayout() {
+        view.addSubview(searchBar)
         searchBar.snp.makeConstraints {
             $0.top.equalTo(view.safeAreaLayoutGuide).offset(20)
             $0.horizontalEdges.equalToSuperview()
@@ -41,8 +36,14 @@ final class SearchViewController: BaseViewController {
     }
     
     override func configView() {
-//        searchBar.delegate = self
         searchBar.placeholder = "검색하세요."
+        // TODO: 서치바 레이어에 대해 간단하게 기록해두면 좋을거 같다.
+//        searchBar.backgroundColor = .blue
+//        searchBar.searchTextField.backgroundColor = .red
+        // UISearchBarBackround 계층
+        searchBar.barTintColor = .systemGroupedBackground
+        searchBar.layer.borderColor = UIColor.systemGroupedBackground.cgColor
+        searchBar.layer.borderWidth = 1
     }
     
     override func bind() {
@@ -53,48 +54,34 @@ final class SearchViewController: BaseViewController {
         
         let output = viewModel.transform(input: input)
         
-        output.alertMessage
-            .drive(with: self) { owner, value in
-                AlertManager.shared.showSimpleAlert(title: "검색어", message: value)
+        output.shoppingKeyword
+            .drive(with: self) { owner, keyword in
+                print(self, keyword)
+                let vc = ShoppingListViewController()
+                vc.viewModel.searchKeyword.accept(keyword)
+                owner.navigationController?.pushViewController(vc, animated: true)
             } onCompleted: { owner in
                 print("onCompleted")
             } onDisposed: { owner in
                 print("onDisposed")
             }
             .disposed(by: disposeBag)
-
-        
-//        viewModel.outputShoppingList.lazyBind { [weak self] response in
-//            self?.pushShoppingListViewController(items: response, navTitle: self?.searchBar.text)
-//        }
-//        viewModel.outputAlert.lazyBind { [weak self] alert in
-//            self?.present(alert!, animated: true)
-//        }
     }
     
-    private func pushShoppingListViewController(items: Merchandise?, navTitle: String?) {
-        let vc = ShoppingListViewController()
-        
-        guard let items else {
-            AlertManager.shared.showSimpleAlert(title: "경고!", message: "failed to unwrapping items")
-            return
-        }
-        
-        vc.viewModel.lastSearched = viewModel.lastSearched
-        vc.viewModel.inputShoppingList.value = items
-        vc.navigationItem.titleView = UILabel().then {
-            $0.text = navTitle
-            $0.font = .systemFont(ofSize: 16, weight: .black)
-        }
-        navigationController?.pushViewController(vc, animated: true)
-    }
-}
-//
-//extension SearchViewController: UISearchBarDelegate {
-//    
-//    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
-//        print(#function,"입력된 문자열(\(searchBar.text!)")
-//        view.endEditing(true)
-//        viewModel.inputSearchText.value = searchBar.text
+//    private func pushShoppingListViewController(items: Merchandise?, navTitle: String?) {
+//        let vc = ShoppingListViewController()
+//        
+//        guard let items else {
+//            AlertManager.shared.showSimpleAlert(title: "경고!", message: "failed to unwrapping items")
+//            return
+//        }
+//        
+//        vc.viewModel.lastSearched = viewModel.lastSearched
+//        vc.viewModel.inputShoppingList.value = items
+//        vc.navigationItem.titleView = UILabel().then {
+//            $0.text = navTitle
+//            $0.font = .systemFont(ofSize: 16, weight: .black)
+//        }
+//        navigationController?.pushViewController(vc, animated: true)
 //    }
-//}
+}
