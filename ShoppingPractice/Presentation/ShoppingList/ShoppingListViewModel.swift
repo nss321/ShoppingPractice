@@ -27,12 +27,16 @@ final class ShoppingListViewModel: ViewModel {
         let navTitle: Driver<String>
         let searchResult: Driver<[MerchandiseInfo]>
         let totalNumber: Driver<String?>
+        let errorNoti: Driver<String>
     }
     
     func transform(input: Input) -> Output {
         let result = PublishRelay<[MerchandiseInfo]>()
         let totalNumber = PublishRelay<String?>()
+        let errroNoti = PublishRelay<String>()
         
+        
+        // MARK: operator 부분과 bind 부분이 똑같은데 이것도 줄일 수는 없는지?
         searchKeyword
             .flatMap { keyword in
                 ShoppingService.shared.callSearchAPI(api: .sorted(keyword: keyword, sortby: .sim, startAt: 1), type: Merchandise.self)
@@ -44,6 +48,7 @@ final class ShoppingListViewModel: ViewModel {
                     totalNumber.accept(owner.configTotalCount(total: response.total))
                 case .failure(let error):
                     print(error)
+                    errroNoti.accept(error.rawValue)
                 }
             }
             .disposed(by: disposeBag)
@@ -67,6 +72,7 @@ final class ShoppingListViewModel: ViewModel {
                             totalNumber.accept(owner.configTotalCount(total: response.total))
                         case .failure(let error):
                             print(error)
+                            errroNoti.accept(error.rawValue)
                         }
                     }
                     .disposed(by: disposeBag)
@@ -74,7 +80,8 @@ final class ShoppingListViewModel: ViewModel {
         
         return Output(navTitle: searchKeyword.asDriver(),
                       searchResult: result.asDriver(onErrorDriveWith: .empty()),
-                      totalNumber: totalNumber.asDriver(onErrorDriveWith: .empty())
+                      totalNumber: totalNumber.asDriver(onErrorDriveWith: .empty()),
+                      errorNoti: errroNoti.asDriver(onErrorDriveWith: .empty())
         )
     }
     

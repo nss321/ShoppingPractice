@@ -25,7 +25,7 @@ enum SortBy: String {
 enum SearchRequest {
     case basic(keyword: String)
     case sorted(keyword: String, sortby: SortBy = .sim, startAt: Int = 1)
-
+    
     var endpoint: URL {
         switch self {
         case .basic(let keyword):
@@ -39,9 +39,9 @@ enum SearchRequest {
         return [
             "X-Naver-Client-Id" : APIKey.naverClientId,
             "X-Naver-Client-Secret" : APIKey.naverClientSecret
-            ]
+        ]
     }
-
+    
     var method: HTTPMethod {
         return .get
     }
@@ -55,10 +55,12 @@ enum SearchRequest {
 //SE05        404Invalid search api (존재하지 않는 검색 api 입니다.)    API 요청 URL에 오타가 있는지 확인합니다.
 //SE99        500System Error (시스템 에러)
 
-enum APIError: Error {
-    case invalidURL
-    case unknownResponse
-    case statusError
+enum APIError: String, Error {
+    case invalidQuery = "잘못된 쿼리입니다."
+    case unauthorizedAccess = "인증되지 않은 토큰입니다."
+    case notFound = "잘못된 요청입니다."
+    case systemError = "백엔드 잘못입니다."
+    case unknownResponse = "알 수 없는 오류입니다."
 }
 
 class ShoppingService {
@@ -92,19 +94,34 @@ class ShoppingService {
                 // 응답 전체를 캐싱해서 그럴까?
                 // TODO: 네트워크 요청이 길어질 때 처리(10초, 30초 등)
                 request.cachePolicy = .returnCacheDataElseLoad
-            }.responseDecodable(of: T.self) { response in
-                switch response.result {
-                case .success(let result):
-                    value(.success(.success(result)))
-                    break
-                case .failure(let error):
-                    value(.success(.failure(.unknownResponse)))
-                    dump(error)
-                }
             }
+                       .validate(statusCode: 200...299)
+                       .responseDecodable(of: T.self) { response in
+                           switch response.result {
+                           case .success(let result):
+                               value(.success(.success(result)))
+                               break
+                           case .failure(let error):
+                               if let status = response.response?.statusCode {
+                                   switch status {
+                                   case 400:
+                                       value(.success(.failure(APIError.invalidQuery)))
+                                   case 403:
+                                       value(.success(.failure(APIError.unauthorizedAccess)))
+                                   case 404:
+                                       value(.success(.failure(APIError.notFound)))
+                                   case 500:
+                                       value(.success(.failure(APIError.systemError)))
+                                   default:
+                                       value(.success(.failure(APIError.unknownResponse)))
+                                   }
+                               }
+                               dump(error)
+                           }
+                       }
             return Disposables.create {
                 print("통신끝")
-            }       
+            }
         }
     }
 }

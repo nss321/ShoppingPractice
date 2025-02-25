@@ -52,6 +52,14 @@ final class ShoppingListViewController: BaseViewController {
             .drive(resultCntLabel.rx.text)
             .disposed(by: disposeBag)
         
+        output.errorNoti
+            .drive(with: self) { owner, message in
+                AlertManager.shared.showErrorAlert(title: "검색 실패", message: message) { _ in
+                    owner.navigationController?.popViewController(animated: true)
+                }
+            }
+            .disposed(by: disposeBag)
+        
         [
             accuracyFilter.rx.tap,
             dateFilter.rx.tap,

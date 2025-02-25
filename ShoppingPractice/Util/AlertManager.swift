@@ -22,4 +22,13 @@ final class AlertManager {
         alert.addAction(ok)
         root().present(alert, animated: true)
     }
+    
+    func showErrorAlert(title: String, message: String, handler: ((UIAlertAction) -> Void)? = nil) {
+        let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
+        let ok = UIAlertAction(title: "확인", style: .default, handler: handler)
+        alert.addAction(ok)
+        root().present(alert, animated: true)
+    }
+    
+    
 }
