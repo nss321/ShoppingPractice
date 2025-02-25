@@ -13,7 +13,6 @@ protocol ViewConfig {
 
 extension ViewConfig where Self: BaseViewController {
     func configBackgroundColor() {
-        print(#function, "extension")
-        view.backgroundColor = .systemBackground
+        view.backgroundColor = .systemGroupedBackground
     }
 }

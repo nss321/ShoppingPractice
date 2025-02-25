@@ -47,11 +47,6 @@ enum SearchRequest {
 class ShoppingService {
     static let shared = ShoppingService()
     
-    private let header: HTTPHeaders = [
-        "X-Naver-Client-Id" : APIKey.naverClientId,
-        "X-Naver-Client-Secret" : APIKey.naverClientSecret
-    ]
-    
     func callSearchReQuest<T: Decodable>(api: SearchRequest, type: T.Type, completion: @escaping(T) -> Void) {
         AF.request(api.endpoint,
                    method: api.method,

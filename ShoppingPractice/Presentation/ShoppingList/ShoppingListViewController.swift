@@ -101,6 +101,7 @@ final class ShoppingListViewController: BaseViewController {
         }
         
         collectionView.do {
+            $0.backgroundColor = .clear
             $0.delegate = self
             $0.dataSource = self
             $0.prefetchDataSource = self
@@ -129,6 +130,8 @@ extension ShoppingListViewController: UICollectionViewDataSource, UICollectionVi
         let item = viewModel.outputShoppingList.value[indexPath.item]
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: ShoppingListCollectionViewCell.id, for: indexPath) as! ShoppingListCollectionViewCell
         cell.config(item: item)
+        cell.clipsToBounds = true
+        cell.layer.cornerRadius = 12
         return cell
     }
     

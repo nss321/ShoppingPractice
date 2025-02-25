@@ -13,8 +13,8 @@ extension UIButton.Configuration {
         attribString.font = .systemFont(ofSize: 16)
         var config = UIButton.Configuration.plain()
         config.attributedTitle = attribString
-        config.baseForegroundColor = .white
-        config.background.backgroundColor = .black
+        config.baseForegroundColor = .label
+        config.background.backgroundColor = .systemBackground
         config.background.strokeWidth = 1
         config.background.strokeColor = .white
         return config

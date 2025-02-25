@@ -10,10 +10,10 @@ import UIKit
 import SnapKit
 import Then
 
-class SearchViewController: BaseViewController {
+final class SearchViewController: BaseViewController {
     
-    let searchBar = UISearchBar()
-    let viewModel = SearchViewModel()
+    private let searchBar = UISearchBar()
+    private let viewModel = SearchViewModel()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -37,7 +37,7 @@ class SearchViewController: BaseViewController {
         searchBar.placeholder = "검색하세요."
     }
     
-    func bind() {
+    private func bind() {
         viewModel.outputShoppingList.lazyBind { [weak self] response in
             self?.pushShoppingListViewController(items: response, navTitle: self?.searchBar.text)
         }
@@ -46,7 +46,7 @@ class SearchViewController: BaseViewController {
         }
     }
     
-    func pushShoppingListViewController(items: Merchandise?, navTitle: String?) {
+    private func pushShoppingListViewController(items: Merchandise?, navTitle: String?) {
         let vc = ShoppingListViewController()
         
         guard let items else {
