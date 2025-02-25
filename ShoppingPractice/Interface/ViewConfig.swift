@@ -6,7 +6,12 @@
 //
 
 protocol ViewConfig {
-    func configHierarchy()
     func configLayout()
     func configView()
+}
+
+extension ViewConfig where Self: BaseViewController {
+    func configBackgroundColor() {
+        view.backgroundColor = .systemGroupedBackground
+    }
 }

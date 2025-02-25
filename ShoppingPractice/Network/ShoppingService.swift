@@ -5,175 +5,106 @@
 //  Created by BAE on 1/16/25.
 //
 
-import UIKit
+import Foundation
+
 import Alamofire
+import RxSwift
+import RxCocoa
+
+enum SortBy: String {
+    case sim = "sim" // 정확도
+    case date = "date" // 날짜순
+    case asc = "asc" // 가격높은순
+    case dsc = "dsc" // 가격낮은순
+    
+    var filter: String {
+        return rawValue
+    }
+}
+
+enum SearchRequest {
+    case basic(keyword: String)
+    case sorted(keyword: String, sortby: SortBy = .sim, startAt: Int = 1)
+
+    var endpoint: URL {
+        switch self {
+        case .basic(let keyword):
+            return URL(string: Urls.basic(keyword: keyword))!
+        case let .sorted(keyword, sortby, startAt):
+            return URL(string: Urls.sortBy(keyword: keyword, sortby: sortby, startAt: startAt))!
+        }
+    }
+    
+    var header: HTTPHeaders {
+        return [
+            "X-Naver-Client-Id" : APIKey.naverClientId,
+            "X-Naver-Client-Secret" : APIKey.naverClientSecret
+            ]
+    }
+
+    var method: HTTPMethod {
+        return .get
+    }
+}
+
+//400Incorrect query request (잘못된 쿼리요청입니다.)    API 요청 URL의 프로토콜, 파라미터 등에 오류가 있는지 확인합니다.
+//SE02        400Invalid display value (부적절한 display 값입니다.)    display 파라미터의 값이 허용 범위의 값(1~100)인지 확인합니다.
+//SE03        400Invalid start value (부적절한 start 값입니다.)    start 파라미터의 값이 허용 범위의 값(1~1000)인지 확인합니다.
+//SE04        400Invalid sort value (부적절한 sort 값입니다.)    sort 파라미터의 값에 오타가 있는지 확인합니다.
+//SE06        400Malformed encoding (잘못된 형식의 인코딩입니다.)    검색어를 UTF-8로 인코딩합니다.
+//SE05        404Invalid search api (존재하지 않는 검색 api 입니다.)    API 요청 URL에 오타가 있는지 확인합니다.
+//SE99        500System Error (시스템 에러)
+
+enum APIError: Error {
+    case invalidURL
+    case unknownResponse
+    case statusError
+}
 
 class ShoppingService {
     static let shared = ShoppingService()
     
-    private let header: HTTPHeaders = [
-        "X-Naver-Client-Id" : APIKey.naverClientId,
-        "X-Naver-Client-Secret" : APIKey.naverClientSecret
-    ]
-    
-    // TODO: 범용 리퀘스트 메서드로 분리할 수 없는지 고민해보기
-    /*
-    private func getRequest(url: String, completion: (@escaping(Merchandise)->Merchandise)) {
-        AF.request(url,
-                   method: .get,
-                   headers: header
-        )
-        .validate()
-        .responseDecodable(of: Merchandise.self) { response in
+    func callSearchReQuest<T: Decodable>(api: SearchRequest, type: T.Type, completion: @escaping(T) -> Void) {
+        AF.request(api.endpoint,
+                   method: api.method,
+                   headers: api.header)
+        .responseDecodable(of: T.self) { response in
             switch response.result {
-            case .success(let value):ㅂ
-                dump(value.items)
+            case .success(let value):
                 completion(value)
+                break
             case .failure(let error):
-                print(#function, error)
+                dump(error)
             }
         }
     }
     
-    private func callSearchRequest(text: String) -> Merchandise {
-        var merchandise = Merchandise(total: 0, items: [])
-        let url = Urls.naverShoppingWithKeywordWithParams(
-            keyword: text,
-            params: [.display : "10"])
+    func callSearchAPI<T: Decodable>(api: SearchRequest, type: T.Type) -> Single<Result<T, APIError>> {
         
-        getRequest(url: url) { Merchandise in
-            print(#function)
-            dump(Merchandise)
-            merchandise = Merchandise
-            return merchandise
-        }
-        //        print(merchandise)
-        return merchandise
-    }
-     */
-    
-    
-    func callSearchRequest(text: String, completion: @escaping(Merchandise)->Void){
-        let url = Urls.naverShoppingWithKeywordWithParams(
-            keyword: text,
-            params: [.display : "30"])
-        
-        AF.request(url,
-                   method: .get,
-                   headers: header
-        ).responseDecodable(of: Merchandise.self) { response in
-            switch response.result {
-            case .success(let value):
-                dump(value)
-                completion(value)
-            case .failure(_):
-                if let errorData = response.data {
-                    print(errorData)
-                    do {
-                        let networkError = try JSONDecoder().decode(ShoppingAPIError.self, from: errorData)
-                        dump(networkError)
-                    } catch {
-                        print("do-catch")
-                    }
-                } else {
-                    print("failed unwrapping erroData")
+        return Single.create { value in
+            
+            AF.request(api.endpoint,
+                       method: api.method,
+                       headers: api.header) { request in
+                // 반복적인 네트워크 요청을 줄이기 위해서 사용
+                // Device Network Condtion을 very poor로 두고 테스트 했을때 의도한 대로 동작
+                // 캐시된 데이터를 뱉어도 스테이터스 코드는 200을 밷는다??
+                // 응답 전체를 캐싱해서 그럴까?
+                // TODO: 네트워크 요청이 길어질 때 처리(10초, 30초 등)
+                request.cachePolicy = .returnCacheDataElseLoad
+            }.responseDecodable(of: T.self) { response in
+                switch response.result {
+                case .success(let result):
+                    value(.success(.success(result)))
+                    break
+                case .failure(let error):
+                    value(.success(.failure(.unknownResponse)))
+                    dump(error)
                 }
             }
+            return Disposables.create {
+                print("통신끝")
+            }       
         }
     }
-    
-    func callSearchRequest(text: String, sortedBy: SortBy, completion: @escaping(Merchandise)->Void){
-        var url = Urls.naverShoppingWithKeywordWithParams(
-            keyword: text,
-            params: [.display : "30"])
-        url.append(naverParams.sort.param)
-        
-        switch sortedBy {
-        case .asc:
-            url.append(sortedBy.filter)
-            break
-        case .date:
-            url.append(sortedBy.filter)
-            break
-        case .dsc:
-            url.append(sortedBy.filter)
-            break
-        case .sim:
-            url.append(sortedBy.filter)
-            break
-        }
-        
-        AF.request(url,
-                   method: .get,
-                   headers: header
-        ).responseDecodable(of: Merchandise.self) { response in
-//            print(response.response?.statusCode)
-            switch response.result {
-            case .success(let value):
-                dump(value)
-                completion(value)
-            case .failure(_):
-//                print(error)
-                if let errorData = response.data {
-                    print(errorData)
-                    do {
-                        let networkError = try JSONDecoder().decode(ShoppingAPIError.self, from: errorData)
-                        dump(networkError)
-                    } catch {
-                        print("do-catch")
-                    }
-                } else {
-                    print("failed unwrapping erroData")
-                }
-                  
-            }
-        }
-    }
-    
-    func callSearchRequest(text: String, sortedBy: SortBy, startAt: Int, completion: @escaping(Merchandise)->Void){
-        var url = Urls.naverShoppingWithKeywordWithParams(
-            keyword: text,
-            params: [.display : "30"])
-        url.append(naverParams.sort.param)
-        
-        switch sortedBy {
-        case .asc:
-            url.append(sortedBy.filter)
-            break
-        case .date:
-            url.append(sortedBy.filter)
-            break
-        case .dsc:
-            url.append(sortedBy.filter)
-            break
-        case .sim:
-            url.append(sortedBy.filter)
-            break
-        }
-        
-        url.append(naverParams.start.param)
-        url.append(String(startAt))
-        
-        AF.request(url, method: .get, headers: header).responseDecodable(of: Merchandise.self) { response in
-            switch response.result {
-            case .success(let value):
-                dump(value)
-                completion(value)
-            case .failure(_):
-                if let errorData = response.data {
-                    print(errorData)
-                    do {
-                        let networkError = try JSONDecoder().decode(ShoppingAPIError.self, from: errorData)
-                        dump(networkError)
-                    } catch {
-                        print("do-catch")
-                    }
-                } else {
-                    print("failed unwrapping erroData")
-                }
-            }
-        }
-    }
-    
-    
 }

@@ -9,7 +9,7 @@ import UIKit
 import SnapKit
 import Then
 
-class CustomLikeButton: BaseButton {
+final class CustomLikeButton: BaseButton {
     
     override init(frame: CGRect) {
         super.init(frame: frame)

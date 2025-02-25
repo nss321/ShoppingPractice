@@ -7,53 +7,38 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		1193B7C42D6D7F9200326E2E /* RxCocoa in Frameworks */ = {isa = PBXBuildFile; productRef = 1193B7C32D6D7F9200326E2E /* RxCocoa */; };
 		11E366D42D378260008C1E04 /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = 11E366D32D378260008C1E04 /* Alamofire */; };
 		11E366D72D378291008C1E04 /* SnapKit in Frameworks */ = {isa = PBXBuildFile; productRef = 11E366D62D378291008C1E04 /* SnapKit */; };
 		11E366DA2D37829E008C1E04 /* Then in Frameworks */ = {isa = PBXBuildFile; productRef = 11E366D92D37829E008C1E04 /* Then */; };
 		11E366DD2D3782B1008C1E04 /* Kingfisher in Frameworks */ = {isa = PBXBuildFile; productRef = 11E366DC2D3782B1008C1E04 /* Kingfisher */; };
-		11E366E62D3782C2008C1E04 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 11E366DF2D3782C2008C1E04 /* Assets.xcassets */; };
-		11E366E82D3782C2008C1E04 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 11E366E22D3782C2008C1E04 /* LaunchScreen.storyboard */; };
-		11E366E92D3782C2008C1E04 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11E366DE2D3782C2008C1E04 /* AppDelegate.swift */; };
-		11E366EA2D3782C2008C1E04 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11E366E32D3782C2008C1E04 /* SceneDelegate.swift */; };
-		11E366EB2D3782C2008C1E04 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11E366E42D3782C2008C1E04 /* ViewController.swift */; };
-		11E366F12D3782F9008C1E04 /* ViewConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11E366F02D3782F4008C1E04 /* ViewConfig.swift */; };
-		11E366F32D378327008C1E04 /* UIViewController+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11E366F22D378322008C1E04 /* UIViewController+.swift */; };
-		11E366F62D37848B008C1E04 /* ShoppingListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11E366F52D37848B008C1E04 /* ShoppingListViewController.swift */; };
-		11E366FB2D378748008C1E04 /* Merchandise.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11E366FA2D378736008C1E04 /* Merchandise.swift */; };
-		11E366FD2D37DC54008C1E04 /* UIView+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11E366FC2D37DC4B008C1E04 /* UIView+.swift */; };
-		11E367002D37E26B008C1E04 /* BaseComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11E366FF2D37E26B008C1E04 /* BaseComponent.swift */; };
-		11E367042D37EF01008C1E04 /* APIKeys.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11E367032D37EF01008C1E04 /* APIKeys.swift */; };
-		11E367062D37EF11008C1E04 /* Urls.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11E367052D37EF11008C1E04 /* Urls.swift */; };
-		11E367082D37F5E7008C1E04 /* String+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11E367072D37F5E3008C1E04 /* String+.swift */; };
-		11E3670C2D37F7A0008C1E04 /* ShoppingListCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11E3670B2D37F7A0008C1E04 /* ShoppingListCollectionViewCell.swift */; };
-		11E3670E2D37F883008C1E04 /* CustomLikeButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11E3670D2D37F87D008C1E04 /* CustomLikeButton.swift */; };
-		11E367122D387E5F008C1E04 /* ShoppingService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11E367112D387E53008C1E04 /* ShoppingService.swift */; };
-		11E367662D3969E9008C1E04 /* BaseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11E367652D3969E4008C1E04 /* BaseViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		11E366A42D377942008C1E04 /* ShoppingPractice.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ShoppingPractice.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		11E366DE2D3782C2008C1E04 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		11E366DF2D3782C2008C1E04 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
-		11E366E02D3782C2008C1E04 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		11E366E12D3782C2008C1E04 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
-		11E366E32D3782C2008C1E04 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
-		11E366E42D3782C2008C1E04 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
-		11E366F02D3782F4008C1E04 /* ViewConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewConfig.swift; sourceTree = "<group>"; };
-		11E366F22D378322008C1E04 /* UIViewController+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+.swift"; sourceTree = "<group>"; };
-		11E366F52D37848B008C1E04 /* ShoppingListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShoppingListViewController.swift; sourceTree = "<group>"; };
-		11E366FA2D378736008C1E04 /* Merchandise.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Merchandise.swift; sourceTree = "<group>"; };
-		11E366FC2D37DC4B008C1E04 /* UIView+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+.swift"; sourceTree = "<group>"; };
-		11E366FF2D37E26B008C1E04 /* BaseComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseComponent.swift; sourceTree = "<group>"; };
 		11E367012D37EEC7008C1E04 /* .gitignore */ = {isa = PBXFileReference; lastKnownFileType = text; path = .gitignore; sourceTree = "<group>"; };
-		11E367032D37EF01008C1E04 /* APIKeys.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIKeys.swift; sourceTree = "<group>"; };
-		11E367052D37EF11008C1E04 /* Urls.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Urls.swift; sourceTree = "<group>"; };
-		11E367072D37F5E3008C1E04 /* String+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+.swift"; sourceTree = "<group>"; };
-		11E3670B2D37F7A0008C1E04 /* ShoppingListCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShoppingListCollectionViewCell.swift; sourceTree = "<group>"; };
-		11E3670D2D37F87D008C1E04 /* CustomLikeButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomLikeButton.swift; sourceTree = "<group>"; };
-		11E367112D387E53008C1E04 /* ShoppingService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShoppingService.swift; sourceTree = "<group>"; };
-		11E367652D3969E4008C1E04 /* BaseViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
+
+/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		11290BC52D549A16002AF153 /* Exceptions for "ShoppingPractice" folder in "ShoppingPractice" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				App/Info.plist,
+			);
+			target = 11E366A32D377942008C1E04 /* ShoppingPractice */;
+		};
+/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
+
+/* Begin PBXFileSystemSynchronizedRootGroup section */
+		11290BB12D549A16002AF153 /* ShoppingPractice */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				11290BC52D549A16002AF153 /* Exceptions for "ShoppingPractice" folder in "ShoppingPractice" target */,
+			);
+			path = ShoppingPractice;
+			sourceTree = "<group>";
+		};
+/* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
 		11E366A12D377942008C1E04 /* Frameworks */ = {
@@ -62,6 +47,7 @@
 			files = (
 				11E366DD2D3782B1008C1E04 /* Kingfisher in Frameworks */,
 				11E366D42D378260008C1E04 /* Alamofire in Frameworks */,
+				1193B7C42D6D7F9200326E2E /* RxCocoa in Frameworks */,
 				11E366DA2D37829E008C1E04 /* Then in Frameworks */,
 				11E366D72D378291008C1E04 /* SnapKit in Frameworks */,
 			);
@@ -74,7 +60,7 @@
 			isa = PBXGroup;
 			children = (
 				11E367012D37EEC7008C1E04 /* .gitignore */,
-				11E366E52D3782C2008C1E04 /* ShoppingPractice */,
+				11290BB12D549A16002AF153 /* ShoppingPractice */,
 				11E366A52D377942008C1E04 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -85,96 +71,6 @@
 				11E366A42D377942008C1E04 /* ShoppingPractice.app */,
 			);
 			name = Products;
-			sourceTree = "<group>";
-		};
-		11E366E52D3782C2008C1E04 /* ShoppingPractice */ = {
-			isa = PBXGroup;
-			children = (
-				11E367632D3969C8008C1E04 /* Base */,
-				11E367022D37EEF4008C1E04 /* Network */,
-				11E366FE2D37E25A008C1E04 /* Component */,
-				11E366F42D3783A2008C1E04 /* App */,
-				11E366EF2D3782D5008C1E04 /* Extension */,
-				11E366EE2D3782D1008C1E04 /* Model */,
-				11E366ED2D3782CC008C1E04 /* ViewController */,
-				11E366EC2D3782C4008C1E04 /* Interface */,
-				11E366E02D3782C2008C1E04 /* Info.plist */,
-			);
-			path = ShoppingPractice;
-			sourceTree = "<group>";
-		};
-		11E366EC2D3782C4008C1E04 /* Interface */ = {
-			isa = PBXGroup;
-			children = (
-				11E366F02D3782F4008C1E04 /* ViewConfig.swift */,
-			);
-			path = Interface;
-			sourceTree = "<group>";
-		};
-		11E366ED2D3782CC008C1E04 /* ViewController */ = {
-			isa = PBXGroup;
-			children = (
-				11E366E42D3782C2008C1E04 /* ViewController.swift */,
-				11E366F52D37848B008C1E04 /* ShoppingListViewController.swift */,
-			);
-			path = ViewController;
-			sourceTree = "<group>";
-		};
-		11E366EE2D3782D1008C1E04 /* Model */ = {
-			isa = PBXGroup;
-			children = (
-				11E366FA2D378736008C1E04 /* Merchandise.swift */,
-			);
-			path = Model;
-			sourceTree = "<group>";
-		};
-		11E366EF2D3782D5008C1E04 /* Extension */ = {
-			isa = PBXGroup;
-			children = (
-				11E367072D37F5E3008C1E04 /* String+.swift */,
-				11E366FC2D37DC4B008C1E04 /* UIView+.swift */,
-				11E366F22D378322008C1E04 /* UIViewController+.swift */,
-			);
-			path = Extension;
-			sourceTree = "<group>";
-		};
-		11E366F42D3783A2008C1E04 /* App */ = {
-			isa = PBXGroup;
-			children = (
-				11E366DE2D3782C2008C1E04 /* AppDelegate.swift */,
-				11E366E32D3782C2008C1E04 /* SceneDelegate.swift */,
-				11E366DF2D3782C2008C1E04 /* Assets.xcassets */,
-				11E366E22D3782C2008C1E04 /* LaunchScreen.storyboard */,
-			);
-			path = App;
-			sourceTree = "<group>";
-		};
-		11E366FE2D37E25A008C1E04 /* Component */ = {
-			isa = PBXGroup;
-			children = (
-				11E3670D2D37F87D008C1E04 /* CustomLikeButton.swift */,
-				11E3670B2D37F7A0008C1E04 /* ShoppingListCollectionViewCell.swift */,
-				11E366FF2D37E26B008C1E04 /* BaseComponent.swift */,
-			);
-			path = Component;
-			sourceTree = "<group>";
-		};
-		11E367022D37EEF4008C1E04 /* Network */ = {
-			isa = PBXGroup;
-			children = (
-				11E367112D387E53008C1E04 /* ShoppingService.swift */,
-				11E367032D37EF01008C1E04 /* APIKeys.swift */,
-				11E367052D37EF11008C1E04 /* Urls.swift */,
-			);
-			path = Network;
-			sourceTree = "<group>";
-		};
-		11E367632D3969C8008C1E04 /* Base */ = {
-			isa = PBXGroup;
-			children = (
-				11E367652D3969E4008C1E04 /* BaseViewController.swift */,
-			);
-			path = Base;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -192,12 +88,16 @@
 			);
 			dependencies = (
 			);
+			fileSystemSynchronizedGroups = (
+				11290BB12D549A16002AF153 /* ShoppingPractice */,
+			);
 			name = ShoppingPractice;
 			packageProductDependencies = (
 				11E366D32D378260008C1E04 /* Alamofire */,
 				11E366D62D378291008C1E04 /* SnapKit */,
 				11E366D92D37829E008C1E04 /* Then */,
 				11E366DC2D3782B1008C1E04 /* Kingfisher */,
+				1193B7C32D6D7F9200326E2E /* RxCocoa */,
 			);
 			productName = ShoppingPractice;
 			productReference = 11E366A42D377942008C1E04 /* ShoppingPractice.app */;
@@ -232,6 +132,7 @@
 				11E366D52D378291008C1E04 /* XCRemoteSwiftPackageReference "SnapKit" */,
 				11E366D82D37829E008C1E04 /* XCRemoteSwiftPackageReference "Then" */,
 				11E366DB2D3782B1008C1E04 /* XCRemoteSwiftPackageReference "Kingfisher" */,
+				1193B7C22D6D7F9200326E2E /* XCRemoteSwiftPackageReference "RxSwift" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 11E366A52D377942008C1E04 /* Products */;
@@ -248,8 +149,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				11E366E62D3782C2008C1E04 /* Assets.xcassets in Resources */,
-				11E366E82D3782C2008C1E04 /* LaunchScreen.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -260,37 +159,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				11E366F12D3782F9008C1E04 /* ViewConfig.swift in Sources */,
-				11E366E92D3782C2008C1E04 /* AppDelegate.swift in Sources */,
-				11E367002D37E26B008C1E04 /* BaseComponent.swift in Sources */,
-				11E366F62D37848B008C1E04 /* ShoppingListViewController.swift in Sources */,
-				11E367062D37EF11008C1E04 /* Urls.swift in Sources */,
-				11E3670E2D37F883008C1E04 /* CustomLikeButton.swift in Sources */,
-				11E366F32D378327008C1E04 /* UIViewController+.swift in Sources */,
-				11E366FD2D37DC54008C1E04 /* UIView+.swift in Sources */,
-				11E3670C2D37F7A0008C1E04 /* ShoppingListCollectionViewCell.swift in Sources */,
-				11E367122D387E5F008C1E04 /* ShoppingService.swift in Sources */,
-				11E367042D37EF01008C1E04 /* APIKeys.swift in Sources */,
-				11E366FB2D378748008C1E04 /* Merchandise.swift in Sources */,
-				11E366EA2D3782C2008C1E04 /* SceneDelegate.swift in Sources */,
-				11E367662D3969E9008C1E04 /* BaseViewController.swift in Sources */,
-				11E367082D37F5E7008C1E04 /* String+.swift in Sources */,
-				11E366EB2D3782C2008C1E04 /* ViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
-
-/* Begin PBXVariantGroup section */
-		11E366E22D3782C2008C1E04 /* LaunchScreen.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				11E366E12D3782C2008C1E04 /* Base */,
-			);
-			name = LaunchScreen.storyboard;
-			sourceTree = "<group>";
-		};
-/* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
 		11E366B82D377944008C1E04 /* Debug */ = {
@@ -302,11 +174,10 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = W43DLLFB4Q;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = ShoppingPractice/Info.plist;
+				INFOPLIST_FILE = ShoppingPractice/App/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -314,9 +185,13 @@
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.sean.SeSAC.Assignment.ShoppingPractice;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Debug;
 		};
@@ -329,11 +204,10 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = W43DLLFB4Q;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = ShoppingPractice/Info.plist;
+				INFOPLIST_FILE = ShoppingPractice/App/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -341,9 +215,13 @@
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.sean.SeSAC.Assignment.ShoppingPractice;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Release;
 		};
@@ -490,6 +368,14 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		1193B7C22D6D7F9200326E2E /* XCRemoteSwiftPackageReference "RxSwift" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/ReactiveX/RxSwift.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 6.9.0;
+			};
+		};
 		11E366D22D378260008C1E04 /* XCRemoteSwiftPackageReference "Alamofire" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/Alamofire/Alamofire";
@@ -525,6 +411,11 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		1193B7C32D6D7F9200326E2E /* RxCocoa */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 1193B7C22D6D7F9200326E2E /* XCRemoteSwiftPackageReference "RxSwift" */;
+			productName = RxCocoa;
+		};
 		11E366D32D378260008C1E04 /* Alamofire */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 11E366D22D378260008C1E04 /* XCRemoteSwiftPackageReference "Alamofire" */;

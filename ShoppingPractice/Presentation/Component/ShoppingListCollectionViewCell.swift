@@ -29,14 +29,8 @@ class ShoppingListCollectionViewCell: BaseCollectionViewCell {
             }
         }
     }
-    
-    override init(frame: CGRect) {
-        super.init(frame: frame)
-        configCell()
-        print(#function)
-    }
 
-    private func configCell() {
+    override func configCell() {
         [imageView, mallNameLabel, titleLabel, lpriceLabel, likeButton].forEach { contentView.addSubview($0) }
         
         imageView.snp.makeConstraints {
@@ -64,23 +58,22 @@ class ShoppingListCollectionViewCell: BaseCollectionViewCell {
         imageView.do {
             $0.clipsToBounds = true
             $0.contentMode = .scaleAspectFill
-            $0.layer.cornerRadius = 20
         }
         
         mallNameLabel.do {
             $0.font = .systemFont(ofSize: 12)
-            $0.textColor = .gray
+            $0.textColor = .secondaryLabel
         }
         
         titleLabel.do {
             $0.font = .systemFont(ofSize: 14)
-            $0.textColor = .white
+            $0.textColor = .label
             $0.numberOfLines = 2
         }
         
         lpriceLabel.do {
             $0.font = .systemFont(ofSize: 16, weight: .bold)
-            $0.textColor = .white
+            $0.textColor = .label
         }
         
         likeButton.do {
@@ -90,7 +83,6 @@ class ShoppingListCollectionViewCell: BaseCollectionViewCell {
             $0.config(frame: .zero, action: action)
             $0.layer.cornerRadius = $0.frame.height / 2
         }
-        
     }
     
     func config(item: MerchandiseInfo) {
