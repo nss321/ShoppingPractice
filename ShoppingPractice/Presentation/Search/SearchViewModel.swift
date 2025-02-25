@@ -31,9 +31,6 @@ final class SearchViewModel: ViewModel {
 
     private let disposeBag = DisposeBag()
     
-    // cache
-    var items = Merchandise(total: 0, items: [MerchandiseInfo]())
-    
     func transform(input: Input) -> Output {
         let shoppingKeyword = PublishRelay<String>()
         let isValid = PublishRelay<Bool>()
@@ -62,14 +59,6 @@ final class SearchViewModel: ViewModel {
         
         return Output(shoppingKeyword: shoppingKeyword.asDriver(onErrorDriveWith: .empty()))
     }
-    
-//    private func callRequest(text: String) {
-//        print(#function, "서치바 엔터 후 호출")
-//        ShoppingService.shared.callSearchReQuest(api: .basic(keyword: text), type: Merchandise.self) { [weak self] response in
-//            self?.outputShoppingList.value = response
-//            self?.items = response
-//        }
-//    }
     
     deinit {
         print(#function, "viewModel deinit")
