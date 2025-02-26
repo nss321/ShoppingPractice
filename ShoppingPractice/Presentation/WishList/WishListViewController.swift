@@ -60,6 +60,7 @@ final class WishListViewController: BaseViewController {
         searchBar.layer.borderWidth = 1
 
         collectionView.backgroundColor = .clear
+        collectionView.delegate = self
         
         configDataSource()
         updateSnapshot()
@@ -67,10 +68,6 @@ final class WishListViewController: BaseViewController {
     
     override func configNavigation() {
         navigationItem.title = "Wish Wish"
-    }
-
-    private func configDelegate() {
-        collectionView.delegate = self
     }
 }
 
@@ -111,9 +108,7 @@ private extension WishListViewController {
                 backgroundConfig = UIBackgroundConfiguration.listGroupedCell()
             }
 
-//            backgroundConfig.backgroundColor = .yellow
             backgroundConfig.cornerRadius = 12
-//            backgroundConfig.strokeColor = .systemRed
             backgroundConfig.strokeWidth = 2
             cell.backgroundConfiguration = backgroundConfig
             
@@ -167,8 +162,9 @@ private extension WishListViewController {
 
 extension WishListViewController: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        print(indexPath)
         if let data = dataSource.itemIdentifier(for: indexPath) {
-            AlertManager.shared.showAlertWithHandler(title: "삭제", message: "\(data.content)를 삭제하시겠습니까?") { [weak self] _ in
+            AlertManager.shared.showDestructiveAlert(title: "삭제", message: "\(data.content)를 삭제하시겠습니까?") { [weak self] _ in
                 guard let self else {
                     print(#function, "failed to unwrapping self")
                     return
