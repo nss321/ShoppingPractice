@@ -9,7 +9,7 @@ import Foundation
 
 struct DiffableModel: Hashable {
     let uuid = UUID()
-    let image: String
+    var image: String
     let content: String
     private let _date: Date
     var date: String {

@@ -15,6 +15,7 @@ import SnapKit
 final class WishListViewController: BaseViewController {
     
     enum Section: CaseIterable {
+        case new
         case main
         case sub
     }
@@ -32,6 +33,12 @@ final class WishListViewController: BaseViewController {
     }
     
     private var basicList = DiffableModel.mockData2() {
+        didSet {
+            updateSnapshot()
+        }
+    }
+    
+    private var newList = [DiffableModel]() {
         didSet {
             updateSnapshot()
         }
@@ -58,6 +65,7 @@ final class WishListViewController: BaseViewController {
         searchBar.barTintColor = .systemGroupedBackground
         searchBar.layer.borderColor = UIColor.systemGroupedBackground.cgColor
         searchBar.layer.borderWidth = 1
+        searchBar.delegate = self
 
         collectionView.backgroundColor = .clear
         collectionView.delegate = self
@@ -123,9 +131,10 @@ private extension WishListViewController {
     
     func updateSnapshot() {
         var snapshot = NSDiffableDataSourceSnapshot<Section, DiffableModel>()
-        snapshot.appendSections(Section.allCases)
+        snapshot.appendSections(newList.isEmpty ? [Section.main, Section.sub] : Section.allCases)
         snapshot.appendItems(filledList, toSection: .main)
         snapshot.appendItems(basicList, toSection: .sub)
+        if !newList.isEmpty { snapshot.appendItems(newList, toSection: .new) }
         
         dataSource.apply(snapshot)
     }
@@ -160,6 +169,17 @@ private extension WishListViewController {
     
 }
 
+extension WishListViewController: UISearchBarDelegate {
+    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+        let text = searchBar.text!
+        let newElement = DiffableModel.init(image: "moonphase.new.moon", content: text, date: .now)
+        newList.insert(newElement, at: 0)
+        if newList.count > 1 { newList[1].image = "moonphase.new.moon.inverse" }
+
+        print(#function, text)
+    }
+}
+
 extension WishListViewController: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         print(indexPath)
@@ -171,8 +191,10 @@ extension WishListViewController: UICollectionViewDelegate {
                 }
                 switch indexPath.section {
                 case 0:
-                    self.deleteItem(item: data, list: &self.filledList)
+                    self.deleteItem(item: data, list: &self.newList)
                 case 1:
+                    self.deleteItem(item: data, list: &self.filledList)
+                case 2:
                     self.deleteItem(item: data, list: &self.basicList)
                 default:
                     return
@@ -181,7 +203,7 @@ extension WishListViewController: UICollectionViewDelegate {
         }
     }
 }
-
-#Preview(traits: .defaultLayout, body: {
-    WishListViewController()
-})
+//
+//#Preview(traits: .defaultLayout, body: {
+//    WishListViewController()
+//})
