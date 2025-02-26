@@ -23,12 +23,19 @@ final class AlertManager {
         root().present(alert, animated: true)
     }
     
-    func showAlertWithHandler(title: String, message: String, handler: ((UIAlertAction) -> Void)? = nil) {
+    func showSimpleAlert(title: String, message: String, handler: ((UIAlertAction) -> Void)? = nil) {
         let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
         let ok = UIAlertAction(title: "확인", style: .default, handler: handler)
         alert.addAction(ok)
         root().present(alert, animated: true)
     }
     
-    
+    func showDestructiveAlert(title: String, message: String, handler: ((UIAlertAction) -> Void)?) {
+        let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
+        let ok = UIAlertAction(title: "확인", style: .destructive, handler: handler)
+        let cancel = UIAlertAction(title: "취소", style: .default)
+        alert.addAction(cancel)
+        alert.addAction(ok)
+        root().present(alert, animated: true)
+    }
 }
