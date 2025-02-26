@@ -36,6 +36,15 @@ final class SearchViewController: BaseViewController {
         searchBar.layer.borderWidth = 1
     }
     
+    override func configNavigation() {
+        navigationItem.rightBarButtonItem = UIBarButtonItem(
+            image: UIImage(systemName: "list.number")?.withTintColor(.label, renderingMode: .alwaysOriginal),
+            primaryAction: UIAction(handler: { [weak self] _ in
+                self?.navigationController?.pushViewController(WishListViewController(), animated: true)
+            })
+        )
+    }
+    
     override func bind() {
         let input = SearchViewModel.Input(
             searchButtonClick: searchBar.rx.searchButtonClicked,

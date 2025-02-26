@@ -55,7 +55,7 @@ final class ShoppingListViewController: BaseViewController {
         
         output.errorNoti
             .drive(with: self) { owner, message in
-                AlertManager.shared.showErrorAlert(title: "검색 실패", message: message) { _ in
+                AlertManager.shared.showAlertWithHandler(title: "검색 실패", message: message) { _ in
                     owner.navigationController?.popViewController(animated: true)
                 }
             }
