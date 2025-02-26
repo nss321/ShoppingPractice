@@ -30,7 +30,8 @@ final class ShoppingListViewController: BaseViewController {
             simFilter: accuracyFilter.rx.tap,
             dateFilter: dateFilter.rx.tap,
             dscFilter: hPriceFilter.rx.tap,
-            ascFilter: lPriceFilter.rx.tap
+            ascFilter: lPriceFilter.rx.tap,
+            prefetchIndex: collectionView.rx.prefetchItems
         )
         let output = viewModel.transform(input: input)
         

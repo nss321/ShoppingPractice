@@ -8,9 +8,13 @@
 struct Merchandise: Decodable {
     let total: Int
     var items: [MerchandiseInfo]
+    
+    static func empty() -> Merchandise {
+        return Merchandise.init(total: 0, items: [])
+    }
 }
 
-struct MerchandiseInfo: Decodable {
+struct MerchandiseInfo: Decodable, Equatable {
     let title: String
     let image: String
     let price: String

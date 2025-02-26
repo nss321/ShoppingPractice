@@ -11,16 +11,6 @@ import RxSwift
 import RxCocoa
 import SnapKit
 
-/*
- 1. 서치바 입력, 텍스트 전달
- 2. 유효성 검증
- 3. 적절하지 않다면?
-    3-1. 얼럿 표시
- 4. 적절하다면?
-    4-1. 네트워크 요청
- 5. 화면전환
- */
-
 final class SearchViewController: BaseViewController {
     
     private let searchBar = UISearchBar()
@@ -38,8 +28,8 @@ final class SearchViewController: BaseViewController {
     override func configView() {
         searchBar.placeholder = "검색하세요."
         // TODO: 서치바 레이어에 대해 간단하게 기록해두면 좋을거 같다.
-//        searchBar.backgroundColor = .blue
-//        searchBar.searchTextField.backgroundColor = .red
+        //        searchBar.backgroundColor = .blue
+        //        searchBar.searchTextField.backgroundColor = .red
         // UISearchBarBackround 계층
         searchBar.barTintColor = .systemGroupedBackground
         searchBar.layer.borderColor = UIColor.systemGroupedBackground.cgColor
@@ -67,21 +57,4 @@ final class SearchViewController: BaseViewController {
             }
             .disposed(by: disposeBag)
     }
-    
-//    private func pushShoppingListViewController(items: Merchandise?, navTitle: String?) {
-//        let vc = ShoppingListViewController()
-//        
-//        guard let items else {
-//            AlertManager.shared.showSimpleAlert(title: "경고!", message: "failed to unwrapping items")
-//            return
-//        }
-//        
-//        vc.viewModel.lastSearched = viewModel.lastSearched
-//        vc.viewModel.inputShoppingList.value = items
-//        vc.navigationItem.titleView = UILabel().then {
-//            $0.text = navTitle
-//            $0.font = .systemFont(ofSize: 16, weight: .black)
-//        }
-//        navigationController?.pushViewController(vc, animated: true)
-//    }
 }
