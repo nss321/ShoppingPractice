@@ -10,7 +10,7 @@ import Kingfisher
 import SnapKit
 import Then
 
-class ShoppingListCollectionViewCell: BaseCollectionViewCell {
+final class ShoppingListCollectionViewCell: BaseCollectionViewCell {
     
     static let id = "ShoppingListCollectionViewCell"
     
@@ -19,7 +19,7 @@ class ShoppingListCollectionViewCell: BaseCollectionViewCell {
     private let titleLabel = UILabel()
     private let lpriceLabel = UILabel()
     private let likeButton = CustomLikeButton()
-    
+    private let viewModel = ShoppingItemCellViewModel()
     private var isLiked = false {
         didSet {
             if isLiked {
@@ -28,6 +28,15 @@ class ShoppingListCollectionViewCell: BaseCollectionViewCell {
                 likeButton.configuration?.image = UIImage(systemName: "heart")?.withTintColor(.black, renderingMode: .alwaysOriginal)
             }
         }
+    }
+    
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        imageView.image = nil
+        mallNameLabel.text = nil
+        titleLabel.text = nil
+        lpriceLabel.text = nil
+        isLiked = false // 좋아요인 상태인게 오히려 안보이지는 않을지?
     }
 
     override func configCell() {
@@ -97,5 +106,17 @@ class ShoppingListCollectionViewCell: BaseCollectionViewCell {
         mallNameLabel.text = item.mall
         titleLabel.text = item.title.escapingHTML
         lpriceLabel.text = "\(formatter.string(for: price) ?? "0")원"
+        
+    }
+    
+    override func bind() {
+        /*
+         1. 버튼 이벤트가 발생하면
+         2. UI를 바꾸고
+         3. 좋아요 상태를 저장하고 싶다
+         */
+        let input = ShoppingItemCellViewModel.Input()
+        let output = viewModel.transform(input: input)
+        
     }
 }

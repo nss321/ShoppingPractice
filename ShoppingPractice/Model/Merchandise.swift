@@ -15,16 +15,20 @@ struct Merchandise: Decodable {
 }
 
 struct MerchandiseInfo: Decodable, Equatable {
+    let id: String
     let title: String
     let image: String
     let price: String
     let mall: String
+    let link: String
     
     enum CodingKeys: String, CodingKey {
+        case id = "productId"
         case title
         case image
         case price = "lprice"
         case mall = "mallName"
+        case link
     }
 }
 

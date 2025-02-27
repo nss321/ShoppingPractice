@@ -107,7 +107,6 @@ private extension WishListViewController {
              - text와 secondaryText 영역이 겹치면 secondaryText가 아래로 이동
              */
             
-            
             var backgroundConfig: UIBackgroundConfiguration
 
             if #available(iOS 18, *) {
@@ -131,10 +130,12 @@ private extension WishListViewController {
     
     func updateSnapshot() {
         var snapshot = NSDiffableDataSourceSnapshot<Section, DiffableModel>()
-        snapshot.appendSections(newList.isEmpty ? [Section.main, Section.sub] : Section.allCases)
+//        snapshot.appendSections(newList.isEmpty ? [Section.main, Section.sub] : Section.allCases)
+        snapshot.appendSections(Section.allCases)
         snapshot.appendItems(filledList, toSection: .main)
         snapshot.appendItems(basicList, toSection: .sub)
-        if !newList.isEmpty { snapshot.appendItems(newList, toSection: .new) }
+        snapshot.appendItems(newList, toSection: .new)
+//        if !newList.isEmpty { snapshot.appendItems(newList, toSection: .new) }
         
         dataSource.apply(snapshot)
     }

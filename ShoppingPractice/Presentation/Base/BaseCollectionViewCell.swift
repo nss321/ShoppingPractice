@@ -11,6 +11,7 @@ class BaseCollectionViewCell: UICollectionViewCell {
     override init(frame: CGRect) {
         super.init(frame: frame)
         backgroundColor = .secondarySystemGroupedBackground
+        bind()
         configCell()
     }
     
@@ -20,4 +21,6 @@ class BaseCollectionViewCell: UICollectionViewCell {
     }
     
     func configCell() { }
+    
+    func bind() { }
 }

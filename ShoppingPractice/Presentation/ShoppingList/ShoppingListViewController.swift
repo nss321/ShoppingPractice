@@ -74,6 +74,15 @@ final class ShoppingListViewController: BaseViewController {
                     })
                     .disposed(by: disposeBag)
             }
+        
+        collectionView.rx.modelSelected(MerchandiseInfo.self)
+            .bind(with: self) { owner, item in
+                let vc = DetailWebViewController()
+                vc.navTitle = item.mall
+                vc.url = item.link
+                owner.navigationController?.pushViewController(vc, animated: true)
+            }
+            .disposed(by: disposeBag)
     }
     
     override func configLayout() {
@@ -118,7 +127,6 @@ final class ShoppingListViewController: BaseViewController {
         
         collectionView.do {
             $0.backgroundColor = .clear
-//            $0.prefetchDataSource = self
             $0.register(ShoppingListCollectionViewCell.self, forCellWithReuseIdentifier: ShoppingListCollectionViewCell.id)
         }
     }
@@ -134,20 +142,6 @@ final class ShoppingListViewController: BaseViewController {
         self.navigationController?.interactivePopGestureRecognizer?.delegate = self
     }
 }
-
-//extension ShoppingListViewController: UICollectionViewDataSourcePrefetching {
-//    func collectionView(_ collectionView: UICollectionView, prefetchItemsAt indexPaths: [IndexPath]) {
-////        print(#function, "프리패칭 호출!!!")
-//        for item in indexPaths {
-//            if viewModel.currentPage - 3 == item.row {
-//                // 프리페칭
-//                // 마지막 검색어, 마지막 필터, 현재 페이지를 startAt으로 30개를 더 가져옴
-//                // 가져온 30개를 기존 데이터 outputShoppingList에 붙임.
-//                viewModel.inputPrefetching.value = ()
-//            }
-//        }
-//    }
-//}
 
 // MARK: UIGestureReconizerDelegate
 extension ShoppingListViewController: UIGestureRecognizerDelegate {
