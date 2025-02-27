@@ -51,7 +51,7 @@ final class ShoppingListViewController: BaseViewController {
                     .disposed(by: cell.disposeBag)
             }
             .disposed(by: disposeBag)
-
+        
         output.totalNumber
             .compactMap { $0 }
             .map { "\($0) 개의 검색 결과" }
@@ -134,25 +134,6 @@ final class ShoppingListViewController: BaseViewController {
             $0.backgroundColor = .clear
             $0.register(ShoppingListCollectionViewCell.self, forCellWithReuseIdentifier: ShoppingListCollectionViewCell.id)
         }
-    }
-    
-    override func configNavigation() {
-        self.navigationItem.leftBarButtonItem = UIBarButtonItem(
-            image: UIImage(systemName: "chevron.left")!.withTintColor(.label, renderingMode: .alwaysOriginal),
-            primaryAction: UIAction(handler: { [weak self] _ in
-                self?.navigationController?.popViewController(animated: true)
-            })
-        )
-        self.navigationItem.leftBarButtonItem?.tintColor = .red
-        self.navigationController?.interactivePopGestureRecognizer?.isEnabled = true
-        self.navigationController?.interactivePopGestureRecognizer?.delegate = self
-    }
-}
-
-// MARK: UIGestureReconizerDelegate
-extension ShoppingListViewController: UIGestureRecognizerDelegate {
-    func gestureRecognizerShouldBegin(_ gestureRecognizer: UIGestureRecognizer) -> Bool {
-        return navigationController?.viewControllers.count ?? 0 > 1
     }
 }
 

@@ -37,6 +37,8 @@ final class SearchViewController: BaseViewController {
     }
     
     override func configNavigation() {
+        navigationItem.backButtonTitle = ""
+        navigationController?.navigationBar.tintColor = .label
         navigationItem.rightBarButtonItem = UIBarButtonItem(
             image: UIImage(systemName: "list.number")?.withTintColor(.label, renderingMode: .alwaysOriginal),
             primaryAction: UIAction(handler: { [weak self] _ in
@@ -57,6 +59,7 @@ final class SearchViewController: BaseViewController {
             .drive(with: self) { owner, keyword in
                 print(self, keyword)
                 let vc = ShoppingListViewController()
+                owner.navigationItem.backBarButtonItem?.title = "뿌찎뿡"
                 vc.viewModel.searchKeyword.accept(keyword)
                 owner.navigationController?.pushViewController(vc, animated: true)
             } onCompleted: { owner in
