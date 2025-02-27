@@ -17,12 +17,11 @@ final class CustomLikeButton: BaseButton {
     }
     
     private func configButton() {
-        clipsToBounds = true
-        
         var config = UIButton.Configuration.plain()
-        let image = UIImage(systemName: "heart")?.withTintColor(.black, renderingMode: .alwaysOriginal)
+        let image = UIImage(systemName: "heart")?.withTintColor(.label, renderingMode: .alwaysOriginal)
         config.image = image
-        config.background.backgroundColor = .white
+        config.background.backgroundColor = .secondarySystemBackground
+        config.cornerStyle = .capsule
         
         self.configuration = config
     }
