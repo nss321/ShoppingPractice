@@ -44,6 +44,11 @@ final class ShoppingListViewController: BaseViewController {
                 cell.config(item: element)
                 cell.clipsToBounds = true
                 cell.layer.cornerRadius = 12
+                cell.likeButton.rx.tap
+                    .bind(with: self) { owner, _ in
+                        print(element.title, "Tapped")
+                    }
+                    .disposed(by: cell.disposeBag)
             }
             .disposed(by: disposeBag)
 
@@ -138,6 +143,7 @@ final class ShoppingListViewController: BaseViewController {
                 self?.navigationController?.popViewController(animated: true)
             })
         )
+        self.navigationItem.leftBarButtonItem?.tintColor = .red
         self.navigationController?.interactivePopGestureRecognizer?.isEnabled = true
         self.navigationController?.interactivePopGestureRecognizer?.delegate = self
     }

@@ -6,7 +6,9 @@
 //
 
 import UIKit
+
 import Kingfisher
+import RxSwift
 import SnapKit
 import Then
 
@@ -14,14 +16,16 @@ final class ShoppingListCollectionViewCell: BaseCollectionViewCell {
     
     static let id = "ShoppingListCollectionViewCell"
     
+    private var productId = ""
     private let imageView = UIImageView()
     private let mallNameLabel = UILabel()
     private let titleLabel = UILabel()
     private let lpriceLabel = UILabel()
-    private let likeButton = CustomLikeButton()
+    let likeButton = CustomLikeButton()
     private let viewModel = ShoppingItemCellViewModel()
     private var isLiked = false {
         didSet {
+            print(productId)
             if isLiked {
                 likeButton.configuration?.image = UIImage(systemName: "heart.fill")?.withTintColor(.black, renderingMode: .alwaysOriginal)
             } else {
@@ -29,14 +33,21 @@ final class ShoppingListCollectionViewCell: BaseCollectionViewCell {
             }
         }
     }
+    var disposeBag = DisposeBag()
     
     override func prepareForReuse() {
         super.prepareForReuse()
+        productId = ""
         imageView.image = nil
         mallNameLabel.text = nil
         titleLabel.text = nil
         lpriceLabel.text = nil
         isLiked = false // 좋아요인 상태인게 오히려 안보이지는 않을지?
+        disposeBag = DisposeBag()
+    }
+    
+    deinit {
+        print(self, "deinit")
     }
 
     override func configCell() {
@@ -106,7 +117,7 @@ final class ShoppingListCollectionViewCell: BaseCollectionViewCell {
         mallNameLabel.text = item.mall
         titleLabel.text = item.title.escapingHTML
         lpriceLabel.text = "\(formatter.string(for: price) ?? "0")원"
-        
+        productId = item.id
     }
     
     override func bind() {
@@ -117,6 +128,5 @@ final class ShoppingListCollectionViewCell: BaseCollectionViewCell {
          */
         let input = ShoppingItemCellViewModel.Input()
         let output = viewModel.transform(input: input)
-        
     }
 }
