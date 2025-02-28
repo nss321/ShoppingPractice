@@ -19,7 +19,7 @@ final class CustomLikeButton: BaseButton {
     }
     private let disposeBag = DisposeBag()
     
-//    var viewModel: CustomLikeButtonViewModel!
+    private var viewModel: CustomLikeButtonViewModel!
     
     
     // TODO: 버튼이 상태를 따로 관리하는지?
@@ -36,33 +36,24 @@ final class CustomLikeButton: BaseButton {
         configuration?.image = image
         configuration?.background.backgroundColor = .secondarySystemBackground
         configuration?.cornerStyle = .capsule
-        
-//        configurationUpdateHandler = { [weak self] btn in
-//            switch btn.state {
-//            case .highlighted:
-//                print("button highlighted")
-//                self?.configuration?.background.backgroundColor = .secondarySystemBackground.withAlphaComponent(0.1)
-//            case .selected:
-//                print("button selected")
-//            default:
-//                print("button state is default")
-//                self?.configuration?.background.backgroundColor = .secondarySystemBackground
-//            }
-//        }
     }
     
     func bind(viewModel: CustomLikeButtonViewModel) {
+        self.viewModel = viewModel
         let input = CustomLikeButtonViewModel.Input(
-            likeButtonTap: self.rx.tap
+            likeButtonTap: rx.tap
         )
         let output = viewModel.transform(input: input)
         
-        rx.tap
-            .bind(with: self) { owner, _ in
-                print("\(viewModel.id) Button Tapped")
+        output.isLiked
+            .drive(with: self) { owner, isLiked in
+                if isLiked {
+                    owner.configuration?.image = UIImage(systemName: "heart.fill")?.withTintColor(.label, renderingMode: .alwaysOriginal)
+                } else {
+                    owner.configuration?.image = UIImage(systemName: "heart")?.withTintColor(.label, renderingMode: .alwaysOriginal)
+                }
             }
             .disposed(by: disposeBag)
-        
     }
     
     

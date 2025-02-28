@@ -24,11 +24,11 @@ final class ShoppingListCollectionViewCell: BaseCollectionViewCell {
     private let viewModel = ShoppingItemCellViewModel()
     private var isLiked = false {
         didSet {
-            if isLiked {
-                likeButton.configuration?.image = UIImage(systemName: "heart.fill")?.withTintColor(.black, renderingMode: .alwaysOriginal)
-            } else {
-                likeButton.configuration?.image = UIImage(systemName: "heart")?.withTintColor(.black, renderingMode: .alwaysOriginal)
-            }
+//            if isLiked {
+//                likeButton.configuration?.image = UIImage(systemName: "heart.fill")?.withTintColor(.black, renderingMode: .alwaysOriginal)
+//            } else {
+//                likeButton.configuration?.image = UIImage(systemName: "heart")?.withTintColor(.black, renderingMode: .alwaysOriginal)
+//            }
         }
     }
     var disposeBag = DisposeBag()
@@ -93,12 +93,12 @@ final class ShoppingListCollectionViewCell: BaseCollectionViewCell {
             $0.textColor = .label
         }
         
-        likeButton.do {
-            let action = UIAction { _ in
-                self.isLiked.toggle()
-            }
-            $0.config(frame: .zero, action: action)
-        }
+//        likeButton.do {
+////            let action = UIAction { _ in
+////                self.isLiked.toggle()
+////            }
+////            $0.config(frame: .zero, action: action)
+//        }
     }
     
     func config(item: MerchandiseInfo) {
@@ -113,9 +113,7 @@ final class ShoppingListCollectionViewCell: BaseCollectionViewCell {
         mallNameLabel.text = item.mall
         titleLabel.text = item.title.escapingHTML
         lpriceLabel.text = "\(formatter.string(for: price) ?? "0")원"
-        
-        let viewModel = CustomLikeButtonViewModel(id: item.id)
-        likeButton.bind(viewModel: viewModel)
+        likeButton.bind(viewModel: CustomLikeButtonViewModel(id: item.id))
     }
     
     override func bind() {
