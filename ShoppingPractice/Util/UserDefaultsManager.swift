@@ -16,8 +16,17 @@ final class UserDefaultsManager {
     static let shared = UserDefaultsManager()
     private init () { }
     
-    enum Keys {
+    enum Keys: String {
         case like
     }
 
+    var like: [String] {
+        get {
+            return UserDefaults.standard.stringArray(forKey: Keys.like.rawValue) ?? []
+        }
+        
+        set {
+            UserDefaults.standard.set(newValue, forKey: Keys.like.rawValue)
+        }
+    }
 }

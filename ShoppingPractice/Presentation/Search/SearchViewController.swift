@@ -59,13 +59,8 @@ final class SearchViewController: BaseViewController {
             .drive(with: self) { owner, keyword in
                 print(self, keyword)
                 let vc = ShoppingListViewController()
-                owner.navigationItem.backBarButtonItem?.title = "뿌찎뿡"
                 vc.viewModel.searchKeyword.accept(keyword)
                 owner.navigationController?.pushViewController(vc, animated: true)
-            } onCompleted: { owner in
-                print("onCompleted")
-            } onDisposed: { owner in
-                print("onDisposed")
             }
             .disposed(by: disposeBag)
     }

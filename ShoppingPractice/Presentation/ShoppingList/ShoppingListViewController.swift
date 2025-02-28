@@ -31,7 +31,8 @@ final class ShoppingListViewController: BaseViewController {
             dateFilter: dateFilter.rx.tap,
             dscFilter: hPriceFilter.rx.tap,
             ascFilter: lPriceFilter.rx.tap,
-            prefetchIndex: collectionView.rx.prefetchItems
+            prefetchIndex: collectionView.rx.prefetchItems,
+            itemSelect: collectionView.rx.modelSelected(MerchandiseInfo.self)
         )
         let output = viewModel.transform(input: input)
         
@@ -44,11 +45,6 @@ final class ShoppingListViewController: BaseViewController {
                 cell.config(item: element)
                 cell.clipsToBounds = true
                 cell.layer.cornerRadius = 12
-                cell.likeButton.rx.tap
-                    .bind(with: self) { owner, _ in
-                        print(element.title, "Tapped")
-                    }
-                    .disposed(by: cell.disposeBag)
             }
             .disposed(by: disposeBag)
         
@@ -83,8 +79,7 @@ final class ShoppingListViewController: BaseViewController {
         collectionView.rx.modelSelected(MerchandiseInfo.self)
             .bind(with: self) { owner, item in
                 let vc = DetailWebViewController()
-                vc.navTitle = item.mall
-                vc.url = item.link
+                vc.item = item
                 owner.navigationController?.pushViewController(vc, animated: true)
             }
             .disposed(by: disposeBag)
@@ -134,6 +129,10 @@ final class ShoppingListViewController: BaseViewController {
             $0.backgroundColor = .clear
             $0.register(ShoppingListCollectionViewCell.self, forCellWithReuseIdentifier: ShoppingListCollectionViewCell.id)
         }
+    }
+    
+    override func configNavigation() {
+        navigationItem.backButtonTitle = ""
     }
 }
 

@@ -16,16 +16,14 @@ final class ShoppingListCollectionViewCell: BaseCollectionViewCell {
     
     static let id = "ShoppingListCollectionViewCell"
     
-    private var productId = ""
     private let imageView = UIImageView()
     private let mallNameLabel = UILabel()
     private let titleLabel = UILabel()
     private let lpriceLabel = UILabel()
-    let likeButton = CustomLikeButton()
+    private let likeButton = CustomLikeButton()
     private let viewModel = ShoppingItemCellViewModel()
     private var isLiked = false {
         didSet {
-            print(productId)
             if isLiked {
                 likeButton.configuration?.image = UIImage(systemName: "heart.fill")?.withTintColor(.black, renderingMode: .alwaysOriginal)
             } else {
@@ -37,7 +35,6 @@ final class ShoppingListCollectionViewCell: BaseCollectionViewCell {
     
     override func prepareForReuse() {
         super.prepareForReuse()
-        productId = ""
         imageView.image = nil
         mallNameLabel.text = nil
         titleLabel.text = nil
@@ -101,7 +98,6 @@ final class ShoppingListCollectionViewCell: BaseCollectionViewCell {
                 self.isLiked.toggle()
             }
             $0.config(frame: .zero, action: action)
-            $0.layer.cornerRadius = $0.frame.height / 2
         }
     }
     
@@ -117,7 +113,9 @@ final class ShoppingListCollectionViewCell: BaseCollectionViewCell {
         mallNameLabel.text = item.mall
         titleLabel.text = item.title.escapingHTML
         lpriceLabel.text = "\(formatter.string(for: price) ?? "0")원"
-        productId = item.id
+        
+        let viewModel = CustomLikeButtonViewModel(id: item.id)
+        likeButton.bind(viewModel: viewModel)
     }
     
     override func bind() {

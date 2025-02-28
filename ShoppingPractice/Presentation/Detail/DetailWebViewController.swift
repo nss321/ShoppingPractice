@@ -21,8 +21,7 @@ final class DetailWebViewController: BaseViewController {
         return view
     }()
     
-    var url: String!
-    var navTitle: String!
+    var item: MerchandiseInfo!
     
     override func bind() {
         
@@ -37,17 +36,16 @@ final class DetailWebViewController: BaseViewController {
     }
     
     override func configView() {
-        navigationItem.title = navTitle ?? "test"
+        navigationItem.title = item.mall
         
-        let request = URLRequest(url: URL(string: url)!)
-        print("URL >>> ", url, request)
+        let request = URLRequest(url: URL(string: item.link)!)
+        print("URL >>> ", item.link, request)
         webView.load(request)
     }
     
     private func createWKWebViewConfiguration() -> WKWebViewConfiguration {
         let preference = WKPreferences()
         preference.javaScriptCanOpenWindowsAutomatically = true
-        preference.javaScriptEnabled = true
         
         let controller = WKUserContentController()
         controller.add(self, name: "bridge")
@@ -59,6 +57,12 @@ final class DetailWebViewController: BaseViewController {
         return config
     }
     
+    override func configNavigation() {
+        let likeButton = CustomLikeButton()
+        likeButton.bind(viewModel: CustomLikeButtonViewModel(id: item.id)) 
+        
+        navigationItem.rightBarButtonItem = UIBarButtonItem(customView: likeButton)
+    }
 }
 
 extension DetailWebViewController: WKUIDelegate {

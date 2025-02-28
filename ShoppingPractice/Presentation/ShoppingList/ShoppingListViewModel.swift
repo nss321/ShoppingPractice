@@ -23,6 +23,7 @@ final class ShoppingListViewModel: ViewModel {
         let dscFilter: ControlEvent<Void>
         let ascFilter: ControlEvent<Void>
         let prefetchIndex: ControlEvent<[IndexPath]>
+        let itemSelect: ControlEvent<MerchandiseInfo>
     }
     
     struct Output {
@@ -30,12 +31,14 @@ final class ShoppingListViewModel: ViewModel {
         let searchResult: Driver<[MerchandiseInfo]>
         let totalNumber: Driver<String?>
         let errorNoti: Driver<String>
+//        let vc: Driver<ShoppingListViewController>
     }
     
     func transform(input: Input) -> Output {
         var result = BehaviorRelay<[MerchandiseInfo]>(value: [])
         let totalNumber = PublishRelay<String?>()
         let errroNoti = PublishRelay<String>()
+        let shoppingListVC = PublishRelay<DetailWebViewController>()
         
         
         // MARK: operator 부분과 bind 부분이 똑같은데 이것도 줄일 수는 없는지?
@@ -113,6 +116,11 @@ final class ShoppingListViewModel: ViewModel {
                 }
             }
             .disposed(by: disposeBag)
+        
+//        input.itemSelect
+//            .bind { item in
+//                shoppingListVC.accept(.)
+//            }
         
         return Output(navTitle: searchKeyword.asDriver(),
                       searchResult: result.asDriver(onErrorDriveWith: .empty()),
