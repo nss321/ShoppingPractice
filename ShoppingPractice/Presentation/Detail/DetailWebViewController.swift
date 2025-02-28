@@ -21,23 +21,14 @@ final class DetailWebViewController: BaseViewController {
     }()
     
     var viewModel: DetailWebViewModel!
-    //
-    deinit {
-        print(self, "deinit")
-    }
-
+    
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         viewModel = nil
     }
     
-    override func bind() {
-        
-    }
-    
     override func configLayout() {
         view.addSubview(webView)
-        
         webView.snp.makeConstraints {
             $0.edges.equalTo(view.safeAreaLayoutGuide)
         }
@@ -45,12 +36,17 @@ final class DetailWebViewController: BaseViewController {
     
     override func configView() {
         navigationItem.title = viewModel.item.mall
-        
-        let request = URLRequest(url: URL(string: viewModel.item.link)!)
-        print("URL >>> ", viewModel.item.link, request)
-        webView.load(request)
+        webView.load(viewModel.request)
     }
     
+    override func configNavigation() {
+        let likeButton = CustomLikeButton()
+        likeButton.bind(viewModel: CustomLikeButtonViewModel(id: viewModel.item.id))
+        navigationItem.rightBarButtonItem = UIBarButtonItem(customView: likeButton)
+    }
+}
+
+extension DetailWebViewController {
     private func createWKWebViewConfiguration() -> WKWebViewConfiguration {
         let preference = WKPreferences()
         preference.javaScriptCanOpenWindowsAutomatically = true
@@ -61,14 +57,8 @@ final class DetailWebViewController: BaseViewController {
         let config = WKWebViewConfiguration()
         config.preferences = preference
         config.userContentController = controller
-
+        
         return config
-    }
-    
-    override func configNavigation() {
-        let likeButton = CustomLikeButton()
-        likeButton.bind(viewModel: CustomLikeButtonViewModel(id: viewModel.item.id))
-        navigationItem.rightBarButtonItem = UIBarButtonItem(customView: likeButton)
     }
 }
 

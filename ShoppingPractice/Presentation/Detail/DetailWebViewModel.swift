@@ -5,20 +5,21 @@
 //  Created by BAE on 2/27/25.
 //
 
+import Foundation
+
 import RxSwift
 import RxCocoa
 
 final class DetailWebViewModel: ViewModel {
-    struct Input {
-        let likeButtonTapped: ControlEvent<Void>
-    }
+    struct Input { }
     
-    struct Output {
-        
-    }
+    struct Output { }
     
     let item: MerchandiseInfo
     var completion: (() -> Void)?
+    var request: URLRequest {
+        URLRequest(url: URL(string: item.link)!)
+    }
     
     init(item: MerchandiseInfo) {
         self.item = item
