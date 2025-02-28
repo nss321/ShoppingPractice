@@ -10,6 +10,7 @@ import RxCocoa
 
 final class CustomLikeButtonViewModel: ViewModel {
     struct Input {
+        let buttonConfig: Observable<Void>
         let likeButtonTap: ControlEvent<Void>
     }
     struct Output {
@@ -17,22 +18,24 @@ final class CustomLikeButtonViewModel: ViewModel {
     }
     private let disposeBag = DisposeBag()
     
-    private let id: String
+    let id: String
     
     init(id: String) {
         self.id = id
-        print(id)
-        print(#function, "viewmodel init id =", id)
     }
-    
     
     func transform(input: Input) -> Output {
         let isLiked = BehaviorRelay(value: false)
         
+        input.buttonConfig
+            .bind(with: self) { owner, _ in
+                isLiked.accept(owner.loadLike())
+            }
+            .disposed(by: disposeBag)
+        
         input.likeButtonTap
             .bind(with: self) { owner, _ in
-                print("viewmodel input tap")
-                isLiked.accept(owner.saveLike())
+                isLiked.accept(owner.toggleLike())
             }
             .disposed(by: disposeBag)
         
@@ -41,7 +44,7 @@ final class CustomLikeButtonViewModel: ViewModel {
         )
     }
     
-    private func saveLike() -> Bool {
+    private func toggleLike() -> Bool {
         var isLiked: Bool
         var origin = Set(UserDefaultsManager.shared.like)
         if origin.contains(id) {
@@ -54,4 +57,9 @@ final class CustomLikeButtonViewModel: ViewModel {
         UserDefaultsManager.shared.like = Array(origin)
         return isLiked
     }
+    
+    private func loadLike() -> Bool {
+        return Set(UserDefaultsManager.shared.like).contains(id)
+    }
+    
 }

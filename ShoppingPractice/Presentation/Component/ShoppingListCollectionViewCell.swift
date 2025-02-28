@@ -21,16 +21,6 @@ final class ShoppingListCollectionViewCell: BaseCollectionViewCell {
     private let titleLabel = UILabel()
     private let lpriceLabel = UILabel()
     private let likeButton = CustomLikeButton()
-    private let viewModel = ShoppingItemCellViewModel()
-    private var isLiked = false {
-        didSet {
-//            if isLiked {
-//                likeButton.configuration?.image = UIImage(systemName: "heart.fill")?.withTintColor(.black, renderingMode: .alwaysOriginal)
-//            } else {
-//                likeButton.configuration?.image = UIImage(systemName: "heart")?.withTintColor(.black, renderingMode: .alwaysOriginal)
-//            }
-        }
-    }
     var disposeBag = DisposeBag()
     
     override func prepareForReuse() {
@@ -39,8 +29,7 @@ final class ShoppingListCollectionViewCell: BaseCollectionViewCell {
         mallNameLabel.text = nil
         titleLabel.text = nil
         lpriceLabel.text = nil
-        isLiked = false // 좋아요인 상태인게 오히려 안보이지는 않을지?
-        disposeBag = DisposeBag()
+        likeButton.viewModel = nil
     }
     
     deinit {
@@ -114,15 +103,5 @@ final class ShoppingListCollectionViewCell: BaseCollectionViewCell {
         titleLabel.text = item.title.escapingHTML
         lpriceLabel.text = "\(formatter.string(for: price) ?? "0")원"
         likeButton.bind(viewModel: CustomLikeButtonViewModel(id: item.id))
-    }
-    
-    override func bind() {
-        /*
-         1. 버튼 이벤트가 발생하면
-         2. UI를 바꾸고
-         3. 좋아요 상태를 저장하고 싶다
-         */
-        let input = ShoppingItemCellViewModel.Input()
-        let output = viewModel.transform(input: input)
     }
 }

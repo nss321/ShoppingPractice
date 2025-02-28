@@ -76,10 +76,17 @@ final class ShoppingListViewController: BaseViewController {
                     .disposed(by: disposeBag)
             }
         
-        collectionView.rx.modelSelected(MerchandiseInfo.self)
-            .bind(with: self) { owner, item in
+        Observable
+            .zip (
+                collectionView.rx.modelSelected(MerchandiseInfo.self),
+                collectionView.rx.itemSelected
+            )
+            .bind(with: self) { owner, value in
                 let vc = DetailWebViewController()
-                vc.item = item
+                vc.viewModel = DetailWebViewModel(item: value.0)
+                vc.viewModel.completion = {
+                    owner.collectionView.reloadItems(at: [value.1])
+                }
                 owner.navigationController?.pushViewController(vc, animated: true)
             }
             .disposed(by: disposeBag)

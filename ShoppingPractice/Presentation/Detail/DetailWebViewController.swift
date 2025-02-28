@@ -17,11 +17,19 @@ final class DetailWebViewController: BaseViewController {
     private lazy var webView = {
         let view = WKWebView(frame: .zero, configuration: createWKWebViewConfiguration())
         view.navigationDelegate = self
-        view.uiDelegate = self
         return view
     }()
     
-    var item: MerchandiseInfo!
+    var viewModel: DetailWebViewModel!
+    //
+    deinit {
+        print(self, "deinit")
+    }
+
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        viewModel = nil
+    }
     
     override func bind() {
         
@@ -36,10 +44,10 @@ final class DetailWebViewController: BaseViewController {
     }
     
     override func configView() {
-        navigationItem.title = item.mall
+        navigationItem.title = viewModel.item.mall
         
-        let request = URLRequest(url: URL(string: item.link)!)
-        print("URL >>> ", item.link, request)
+        let request = URLRequest(url: URL(string: viewModel.item.link)!)
+        print("URL >>> ", viewModel.item.link, request)
         webView.load(request)
     }
     
@@ -59,13 +67,9 @@ final class DetailWebViewController: BaseViewController {
     
     override func configNavigation() {
         let likeButton = CustomLikeButton()
-        likeButton.bind(viewModel: CustomLikeButtonViewModel(id: item.id))
+        likeButton.bind(viewModel: CustomLikeButtonViewModel(id: viewModel.item.id))
         navigationItem.rightBarButtonItem = UIBarButtonItem(customView: likeButton)
     }
-}
-
-extension DetailWebViewController: WKUIDelegate {
-    
 }
 
 extension DetailWebViewController: WKNavigationDelegate {

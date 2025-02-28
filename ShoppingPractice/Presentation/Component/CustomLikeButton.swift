@@ -13,17 +13,8 @@ import SnapKit
 
 final class CustomLikeButton: BaseButton {
 
-    var isLiked: Bool = false {
-        didSet {
-        }
-    }
-    private let disposeBag = DisposeBag()
-    
-    private var viewModel: CustomLikeButtonViewModel!
-    
-    
-    // TODO: 버튼이 상태를 따로 관리하는지?
-    
+    var viewModel: CustomLikeButtonViewModel!
+    private var disposeBag = DisposeBag()
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -40,7 +31,11 @@ final class CustomLikeButton: BaseButton {
     
     func bind(viewModel: CustomLikeButtonViewModel) {
         self.viewModel = viewModel
+        self.disposeBag = DisposeBag()
+        let buttonConfig = Observable.just(())
+        
         let input = CustomLikeButtonViewModel.Input(
+            buttonConfig: buttonConfig,
             likeButtonTap: rx.tap
         )
         let output = viewModel.transform(input: input)
@@ -54,11 +49,5 @@ final class CustomLikeButton: BaseButton {
                 }
             }
             .disposed(by: disposeBag)
-    }
-    
-    
-    func config(frame: CGRect, action: UIAction) {
-        self.frame = frame
-        self.addAction(action, for: .touchUpInside)
     }
 }

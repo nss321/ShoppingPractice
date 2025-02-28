@@ -17,12 +17,16 @@ final class DetailWebViewModel: ViewModel {
         
     }
     
-    let url: String
-    let navTitle: String
+    let item: MerchandiseInfo
+    var completion: (() -> Void)?
     
-    init(url: String, navTitle: String) {
-        self.url = url
-        self.navTitle = navTitle
+    init(item: MerchandiseInfo) {
+        self.item = item
+    }
+    
+    deinit {
+        completion?()
+        print("viewmodel deinit")
     }
     
     func transform(input: Input) -> Output {
