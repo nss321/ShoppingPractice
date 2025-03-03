@@ -45,8 +45,19 @@ final class CustomLikeButtonViewModel: ViewModel {
     }
     
     private func toggleLike() -> Bool {
+//        var isLiked: Bool
+//        var origin = Set(UserDefaultsManager.shared.like)
+//        if origin.contains(id) {
+//            origin.remove(id)
+//            isLiked = false
+//        } else {
+//            origin.insert(id)
+//            isLiked = true
+//        }
+//        UserDefaultsManager.shared.like = Array(origin)
+//        return isLiked
         var isLiked: Bool
-        var origin = Set(UserDefaultsManager.shared.like)
+        var origin = UserDefaultsManager.likeList
         if origin.contains(id) {
             origin.remove(id)
             isLiked = false
@@ -54,12 +65,13 @@ final class CustomLikeButtonViewModel: ViewModel {
             origin.insert(id)
             isLiked = true
         }
-        UserDefaultsManager.shared.like = Array(origin)
+        UserDefaultsManager.likeList = origin
         return isLiked
     }
     
     private func loadLike() -> Bool {
-        return Set(UserDefaultsManager.shared.like).contains(id)
+//        return Set(UserDefaultsManager.shared.like).contains(id)
+        return UserDefaultsManager.likeList.contains(id)
     }
     
 }
