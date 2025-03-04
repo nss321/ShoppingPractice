@@ -20,30 +20,36 @@ final class LikeListViewController: BaseViewController {
         view.backgroundColor = .clear
         return view
     }()
+    private let searchBar = UISearchBar()
+    
     private var data: Results<LikedGoodsRealmModel>!
     private let realm = try! Realm()
     private let viewModel = LikeListViewModel()
     
     override func bind() {
-        data = realm.objects(LikedGoodsRealmModel.self)
+        let input = LikeListViewModel.Input()
+        let output = viewModel.transform(input: input)
         
-        BehaviorRelay(value: data)
-            .compactMap {
-                print($0)
-                return $0
-            }
-            .bind(to: collectionView.rx.items(cellIdentifier: ShoppingListCollectionViewCell.id, cellType: ShoppingListCollectionViewCell.self)) ({ _, element, cell in
-                let item = MerchandiseInfo(id: element.id, title: element.title, image: element.image, price: element.price, mall: element.mall, link: element.link)
-                cell.config(item: item)
+        output.data
+            .drive(collectionView.rx.items(cellIdentifier: ShoppingListCollectionViewCell.id, cellType: ShoppingListCollectionViewCell.self))  { _, element, cell in
+                cell.config(item: element)
                 cell.clipsToBounds = true
                 cell.layer.cornerRadius = 12
-                print(item)
-            })
+            }
             .disposed(by: disposeBag)
         
-        collectionView.rx.modelSelected(MerchandiseInfo.self)
-            .bind(with: self) { owner, item in
-                print(item.image)
+        Observable
+            .zip (
+                collectionView.rx.modelSelected(MerchandiseInfo.self),
+                collectionView.rx.itemSelected
+            )
+            .bind(with: self) { owner, value in
+                let vc = DetailWebViewController()
+                vc.viewModel = DetailWebViewModel(item: value.0)
+                vc.viewModel.completion = {
+                    owner.collectionView.reloadItems(at: [value.1])
+                }
+                owner.navigationController?.pushViewController(vc, animated: true)
             }
             .disposed(by: disposeBag)
     }
@@ -58,6 +64,7 @@ final class LikeListViewController: BaseViewController {
     }
     
     override func configNavigation() {
+        navigationItem.backButtonTitle = ""
         navigationItem.title = "좋아요 목록"
     }
 }

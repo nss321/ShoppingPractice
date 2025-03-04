@@ -30,25 +30,9 @@ final class SearchViewController: BaseViewController {
     
     override func configView() {
         searchBar.placeholder = "검색하세요."
-        // TODO: 서치바 레이어에 대해 간단하게 기록해두면 좋을거 같다.
-        //        searchBar.backgroundColor = .blue
-        //        searchBar.searchTextField.backgroundColor = .red
-        // UISearchBarBackround 계층
         searchBar.barTintColor = .systemGroupedBackground
         searchBar.layer.borderColor = UIColor.systemGroupedBackground.cgColor
         searchBar.layer.borderWidth = 1
-        
-//        let origin = UserDefaultsManager.likeList
-//        let newValue = origin.map {
-//            MerchandiseInfo(
-//                id: $0,
-//                title: <#T##String#>,
-//                image: <#T##String#>,
-//                price: <#T##String#>,
-//                mall: <#T##String#>,
-//                link: <#T##String#>)
-//        }
-        
         print(realm.configuration.fileURL)
     }
     

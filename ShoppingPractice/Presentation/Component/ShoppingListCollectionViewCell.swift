@@ -33,7 +33,7 @@ final class ShoppingListCollectionViewCell: BaseCollectionViewCell {
     }
     
     deinit {
-        print(self, "deinit")
+//        print(self, "deinit")
     }
 
     override func configCell() {
