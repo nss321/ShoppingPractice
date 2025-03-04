@@ -22,6 +22,7 @@ final class LikeListViewController: BaseViewController {
     }()
     private let searchBar = {
         let view = UISearchBar()
+        view.placeholder = "검색하세요."
         view.barTintColor = .systemGroupedBackground
         view.layer.borderColor = UIColor.systemGroupedBackground.cgColor
         view.layer.borderWidth = 1

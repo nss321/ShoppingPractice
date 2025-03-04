@@ -30,6 +30,10 @@ struct MerchandiseInfo: Decodable, Equatable {
         case mall = "mallName"
         case link
     }
+    
+    static func empty() -> Self {
+        return MerchandiseInfo(id: "", title: "", image: "", price: "", mall: "", link: "")
+    }
 }
 
 struct ShoppingAPIError: Decodable {

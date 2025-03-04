@@ -16,6 +16,7 @@ final class CustomLikeButtonViewModel: ViewModel {
     }
     struct Output {
         let isLiked: Driver<Bool>
+        let toastMessage: Driver<String>
     }
     
     private let disposeBag = DisposeBag()
@@ -29,7 +30,9 @@ final class CustomLikeButtonViewModel: ViewModel {
     }
     
     func transform(input: Input) -> Output {
+        let itemObservable = Observable.just(item)
         let isLiked = BehaviorRelay(value: false)
+        let toastMessage = PublishRelay<String>()
         
         input.buttonConfig
             .bind(with: self) { owner, _ in
@@ -43,8 +46,26 @@ final class CustomLikeButtonViewModel: ViewModel {
             }
             .disposed(by: disposeBag)
         
+        input.likeButtonTap
+            .withLatestFrom(itemObservable)
+            .map { item -> String in
+                let title = item.title
+                let endIndex = title.index(title.startIndex, offsetBy: 10)
+                return String(title[..<endIndex])
+            }
+            .bind(with: self) { owner, text in
+                print(text)
+                if owner.loadLikeFromRealm() {
+                    toastMessage.accept("\(text)... 좋아요")
+                } else {
+                    toastMessage.accept("\(text)... 삭제")
+                }
+            }
+            .disposed(by: disposeBag)
+        
         return Output(
-            isLiked: isLiked.asDriver()
+            isLiked: isLiked.asDriver(),
+            toastMessage: toastMessage.asDriver(onErrorJustReturn: "")
         )
     }
     

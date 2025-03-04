@@ -10,6 +10,7 @@ import UIKit
 import RxSwift
 import RxCocoa
 import SnapKit
+import Toast
 
 final class CustomLikeButton: BaseButton {
 
@@ -50,5 +51,17 @@ final class CustomLikeButton: BaseButton {
             }
             .disposed(by: disposeBag)
         
+        output.toastMessage
+            .drive(with: self) { owner, message in
+                owner.root().view.makeToast(message, duration: 1.5)
+            }
+            .disposed(by: disposeBag)
+
+    }
+}
+
+extension CustomLikeButton {
+    private func root() -> UIViewController {
+        UIApplication.shared.keyWindow!.rootViewController!
     }
 }
