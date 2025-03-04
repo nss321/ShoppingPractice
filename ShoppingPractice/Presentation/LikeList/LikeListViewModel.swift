@@ -51,11 +51,12 @@ final class LikeListViewModel: ViewModel {
         input.searchBarText.orEmpty
             .throttle(.microseconds(300), scheduler: MainScheduler.instance)
             .distinctUntilChanged()
-            .map { text in
+            .withUnretained(self)
+            .map { owner, text in
                 if text.isEmpty {
-                    return self.data
+                    return owner.data
                 } else {
-                    return self.data.where { $0.title.contains(text, options: .caseInsensitive) }
+                    return owner.data.where { $0.title.contains(text, options: .caseInsensitive) }
                 }
             }
             .map { realmData in
