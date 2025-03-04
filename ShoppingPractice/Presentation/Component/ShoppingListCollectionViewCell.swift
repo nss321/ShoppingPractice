@@ -81,13 +81,6 @@ final class ShoppingListCollectionViewCell: BaseCollectionViewCell {
             $0.font = .systemFont(ofSize: 16, weight: .bold)
             $0.textColor = .label
         }
-        
-//        likeButton.do {
-////            let action = UIAction { _ in
-////                self.isLiked.toggle()
-////            }
-////            $0.config(frame: .zero, action: action)
-//        }
     }
     
     func config(item: MerchandiseInfo) {
@@ -102,6 +95,6 @@ final class ShoppingListCollectionViewCell: BaseCollectionViewCell {
         mallNameLabel.text = item.mall
         titleLabel.text = item.title.escapingHTML
         lpriceLabel.text = "\(formatter.string(for: price) ?? "0")원"
-        likeButton.bind(viewModel: CustomLikeButtonViewModel(id: item.id))
+        likeButton.bind(viewModel: CustomLikeButtonViewModel(item: item))
     }
 }

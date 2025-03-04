@@ -145,14 +145,14 @@ final class ShoppingListViewController: BaseViewController {
 
 // MARK: Extension
 extension ShoppingListViewController {
-   private func layout() -> UICollectionViewFlowLayout {
-       let layout = UICollectionViewFlowLayout()
-       layout.itemSize = CGSize(
-        width: Int(UIScreen.main.bounds.width - viewModel.spacing * 3) / 2,
-        height: Int(UIScreen.main.bounds.height) / 3)
-       layout.scrollDirection = .vertical
-       layout.minimumLineSpacing = viewModel.spacing
-       layout.minimumInteritemSpacing = viewModel.spacing
-       return layout
-   }
+    private func layout() -> UICollectionViewFlowLayout {
+        let layout = UICollectionViewFlowLayout()
+        layout.itemSize = CGSize(
+            width: Int(UIScreen.main.bounds.width - viewModel.spacing * 3) / 2,
+            height: Int(UIScreen.main.bounds.height) / 3)
+        layout.scrollDirection = .vertical
+        layout.minimumLineSpacing = viewModel.spacing
+        layout.minimumInteritemSpacing = viewModel.spacing
+        return layout
+    }
 }

@@ -25,12 +25,20 @@ final class LikeListViewController: BaseViewController {
     private let viewModel = LikeListViewModel()
     
     override func bind() {
+        data = realm.objects(LikedGoodsRealmModel.self)
+        
         BehaviorRelay(value: data)
-            .asDriver()
-            .drive(collectionView.rx.items(cellIdentifier: ShoppingListCollectionViewCell.id, cellType: ShoppingListCollectionViewCell.self))  { _, element, cell in
+            .compactMap {
+                print($0)
+                return $0
+            }
+            .bind(to: collectionView.rx.items(cellIdentifier: ShoppingListCollectionViewCell.id, cellType: ShoppingListCollectionViewCell.self)) ({ _, element, cell in
                 let item = MerchandiseInfo(id: element.id, title: element.title, image: element.image, price: element.price, mall: element.mall, link: element.link)
                 cell.config(item: item)
-            }
+                cell.clipsToBounds = true
+                cell.layer.cornerRadius = 12
+                print(item)
+            })
             .disposed(by: disposeBag)
         
         collectionView.rx.modelSelected(MerchandiseInfo.self)
@@ -41,8 +49,11 @@ final class LikeListViewController: BaseViewController {
     }
     
     override func configLayout() {
+        [collectionView].forEach { view.addSubview($0) }
         collectionView.snp.makeConstraints {
-            $0.edges.equalToSuperview()
+            $0.top.equalToSuperview().offset(12)
+            $0.horizontalEdges.equalToSuperview().inset(12)
+            $0.bottom.equalToSuperview()
         }
     }
     
@@ -53,14 +64,14 @@ final class LikeListViewController: BaseViewController {
 
 // MARK: Extension
 extension LikeListViewController {
-   private func layout() -> UICollectionViewFlowLayout {
-       let layout = UICollectionViewFlowLayout()
-       layout.itemSize = CGSize(
-        width: Int(UIScreen.main.bounds.width - 12 * 3) / 2,
-        height: Int(UIScreen.main.bounds.height) / 3)
-       layout.scrollDirection = .vertical
-       layout.minimumLineSpacing = 12
-       layout.minimumInteritemSpacing = 12
-       return layout
-   }
+    private func layout() -> UICollectionViewFlowLayout {
+        let layout = UICollectionViewFlowLayout()
+        layout.itemSize = CGSize(
+            width: Int(UIScreen.main.bounds.width - 12 * 3) / 2,
+            height: Int(UIScreen.main.bounds.height) / 3)
+        layout.scrollDirection = .vertical
+        layout.minimumLineSpacing = 12
+        layout.minimumInteritemSpacing = 12
+        return layout
+    }
 }

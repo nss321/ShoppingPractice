@@ -41,7 +41,7 @@ final class DetailWebViewController: BaseViewController {
     
     override func configNavigation() {
         let likeButton = CustomLikeButton()
-        likeButton.bind(viewModel: CustomLikeButtonViewModel(id: viewModel.item.id))
+        likeButton.bind(viewModel: CustomLikeButtonViewModel(item: viewModel.item))
         navigationItem.rightBarButtonItem = UIBarButtonItem(customView: likeButton)
     }
 }

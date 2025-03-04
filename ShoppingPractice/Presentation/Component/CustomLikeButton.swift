@@ -49,5 +49,6 @@ final class CustomLikeButton: BaseButton {
                 }
             }
             .disposed(by: disposeBag)
+        
     }
 }

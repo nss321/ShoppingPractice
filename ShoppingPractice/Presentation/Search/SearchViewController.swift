@@ -7,6 +7,7 @@
 
 import UIKit
 
+import RealmSwift
 import RxSwift
 import RxCocoa
 import SnapKit
@@ -16,10 +17,12 @@ final class SearchViewController: BaseViewController {
     private let searchBar = UISearchBar()
     private let viewModel = SearchViewModel()
     
+    let realm = try! Realm()
+    
     override func configLayout() {
         view.addSubview(searchBar)
         searchBar.snp.makeConstraints {
-            $0.top.equalTo(view.safeAreaLayoutGuide).offset(20)
+            $0.top.equalTo(view.safeAreaLayoutGuide)
             $0.horizontalEdges.equalToSuperview()
             $0.height.equalTo(44)
         }
@@ -34,17 +37,35 @@ final class SearchViewController: BaseViewController {
         searchBar.barTintColor = .systemGroupedBackground
         searchBar.layer.borderColor = UIColor.systemGroupedBackground.cgColor
         searchBar.layer.borderWidth = 1
+        
+//        let origin = UserDefaultsManager.likeList
+//        let newValue = origin.map {
+//            MerchandiseInfo(
+//                id: $0,
+//                title: <#T##String#>,
+//                image: <#T##String#>,
+//                price: <#T##String#>,
+//                mall: <#T##String#>,
+//                link: <#T##String#>)
+//        }
+        
+        print(realm.configuration.fileURL)
     }
     
     override func configNavigation() {
         navigationItem.backButtonTitle = ""
         navigationController?.navigationBar.tintColor = .label
-        navigationItem.rightBarButtonItem = UIBarButtonItem(
-            image: UIImage(systemName: "list.number")?.withTintColor(.label, renderingMode: .alwaysOriginal),
+        let wishButton = UIBarButtonItem(
+            image: UIImage(systemName: "list.number"),
             primaryAction: UIAction(handler: { [weak self] _ in
                 self?.navigationController?.pushViewController(WishListViewController(), animated: true)
-            })
-        )
+            }))
+        let likeButton = UIBarButtonItem(
+            image: UIImage(systemName: "heart.fill"),
+            primaryAction: UIAction(handler: { [weak self] _ in
+                self?.navigationController?.pushViewController(LikeListViewController(), animated: true)
+            }))
+        navigationItem.rightBarButtonItems = [likeButton, wishButton]
     }
     
     override func bind() {
