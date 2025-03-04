@@ -11,7 +11,8 @@ import RxSwift
 
 final class LikeListViewModel: ViewModel {
     struct Input {
-        
+        let searchButtonClick: ControlEvent<Void>
+        let searchBarText: ControlProperty<String?>
     }
     
     struct Output {
@@ -47,7 +48,30 @@ final class LikeListViewModel: ViewModel {
             }
             .disposed(by: disposeBag)
         
-        
+        input.searchBarText.orEmpty
+            .throttle(.microseconds(300), scheduler: MainScheduler.instance)
+            .distinctUntilChanged()
+            .map { text in
+                if text.isEmpty {
+                    return self.data
+                } else {
+                    return self.data.where { $0.title.contains(text, options: .caseInsensitive) }
+                }
+            }
+            .map { realmData in
+                let merchandiseInfo = Array(realmData).map{
+                    MerchandiseInfo(
+                        id: $0.id,
+                        title: $0.title,
+                        image: $0.image,
+                        price: $0.price,
+                        mall: $0.mall,
+                        link: $0.link)
+                }
+                return merchandiseInfo
+            }
+            .bind(to: storedData)
+            .disposed(by: disposeBag)
         
         return Output(data: storedData.asDriver())
     }

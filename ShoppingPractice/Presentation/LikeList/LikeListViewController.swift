@@ -34,7 +34,9 @@ final class LikeListViewController: BaseViewController {
     private let viewModel = LikeListViewModel()
     
     override func bind() {
-        let input = LikeListViewModel.Input()
+        let input = LikeListViewModel.Input(
+            searchButtonClick: searchBar.rx.searchButtonClicked,
+            searchBarText: searchBar.rx.text)
         let output = viewModel.transform(input: input)
         
         output.data
