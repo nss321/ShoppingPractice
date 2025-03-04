@@ -45,7 +45,7 @@ final class ShoppingListCollectionViewCell: BaseCollectionViewCell {
         }
         mallNameLabel.snp.makeConstraints {
             $0.top.equalTo(imageView.snp.bottom).offset(4)
-            $0.horizontalEdges.equalToSuperview().inset(12)
+            $0.horizontalEdges.equalToSuperview().inset(smallMargin)
         }
         titleLabel.snp.makeConstraints {
             $0.top.equalTo(mallNameLabel.snp.bottom).offset(4)
@@ -57,8 +57,8 @@ final class ShoppingListCollectionViewCell: BaseCollectionViewCell {
         }
         likeButton.snp.makeConstraints {
             $0.size.equalTo(imageView.snp.width).dividedBy(5)
-            $0.trailing.equalTo(imageView.snp.trailing).inset(12)
-            $0.bottom.equalTo(imageView.snp.bottom).inset(12)
+            $0.trailing.equalTo(imageView.snp.trailing).inset(smallMargin)
+            $0.bottom.equalTo(imageView.snp.bottom).inset(smallMargin)
         }
         
         imageView.do {
@@ -67,7 +67,7 @@ final class ShoppingListCollectionViewCell: BaseCollectionViewCell {
         }
         
         mallNameLabel.do {
-            $0.font = .systemFont(ofSize: 12)
+            $0.font = .systemFont(ofSize: CGFloat(smallMargin))
             $0.textColor = .secondaryLabel
         }
         

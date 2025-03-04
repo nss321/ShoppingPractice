@@ -97,17 +97,17 @@ final class ShoppingListViewController: BaseViewController {
         [accuracyFilter, dateFilter, hPriceFilter, lPriceFilter].forEach { filterStack.addArrangedSubview($0) }
         
         resultCntLabel.snp.makeConstraints {
-            $0.top.equalTo(view.safeAreaLayoutGuide).offset(viewModel.spacing)
-            $0.leading.equalToSuperview().inset(viewModel.spacing)
+            $0.top.equalTo(view.safeAreaLayoutGuide).offset(smallMargin)
+            $0.leading.equalToSuperview().inset(smallMargin)
         }
         filterStack.snp.makeConstraints {
-            $0.top.equalTo(resultCntLabel.snp.bottom).offset(viewModel.spacing)
-            $0.horizontalEdges.equalToSuperview().inset(viewModel.spacing)
+            $0.top.equalTo(resultCntLabel.snp.bottom).offset(smallMargin)
+            $0.horizontalEdges.equalToSuperview().inset(smallMargin)
             $0.height.equalTo(32)
         }
         collectionView.snp.makeConstraints {
-            $0.top.equalTo(filterStack.snp.bottom).offset(viewModel.spacing)
-            $0.horizontalEdges.equalToSuperview().inset(viewModel.spacing)
+            $0.top.equalTo(filterStack.snp.bottom).offset(smallMargin)
+            $0.horizontalEdges.equalToSuperview().inset(smallMargin)
             $0.bottom.equalToSuperview()
         }
     }
@@ -120,7 +120,7 @@ final class ShoppingListViewController: BaseViewController {
         
         filterStack.do {
             $0.axis = .horizontal
-            $0.spacing = viewModel.spacing
+            $0.spacing = CGFloat(smallMargin)
             $0.distribution = .fillProportionally
         }
         
@@ -148,11 +148,11 @@ extension ShoppingListViewController {
     private func layout() -> UICollectionViewFlowLayout {
         let layout = UICollectionViewFlowLayout()
         layout.itemSize = CGSize(
-            width: Int(UIScreen.main.bounds.width - viewModel.spacing * 3) / 2,
+            width: Int(UIScreen.main.bounds.width - CGFloat(smallMargin * 3)) / 2,
             height: Int(UIScreen.main.bounds.height) / 3)
         layout.scrollDirection = .vertical
-        layout.minimumLineSpacing = viewModel.spacing
-        layout.minimumInteritemSpacing = viewModel.spacing
+        layout.minimumLineSpacing = CGFloat(smallMargin)
+        layout.minimumInteritemSpacing = CGFloat(smallMargin)
         return layout
     }
 }

@@ -20,7 +20,13 @@ final class LikeListViewController: BaseViewController {
         view.backgroundColor = .clear
         return view
     }()
-    private let searchBar = UISearchBar()
+    private let searchBar = {
+        let view = UISearchBar()
+        view.barTintColor = .systemGroupedBackground
+        view.layer.borderColor = UIColor.systemGroupedBackground.cgColor
+        view.layer.borderWidth = 1
+        return view
+    }()
     
     private var data: Results<LikedGoodsRealmModel>!
     private let realm = try! Realm()
@@ -55,10 +61,15 @@ final class LikeListViewController: BaseViewController {
     }
     
     override func configLayout() {
-        [collectionView].forEach { view.addSubview($0) }
+        [searchBar, collectionView].forEach { view.addSubview($0) }
+        searchBar.snp.makeConstraints {
+            $0.top.equalTo(view.safeAreaLayoutGuide)
+            $0.horizontalEdges.equalToSuperview()
+            $0.height.equalTo(44)
+        }
         collectionView.snp.makeConstraints {
-            $0.top.equalToSuperview().offset(12)
-            $0.horizontalEdges.equalToSuperview().inset(12)
+            $0.top.equalTo(searchBar.snp.bottom).offset(smallMargin)
+            $0.horizontalEdges.equalToSuperview().inset(smallMargin)
             $0.bottom.equalToSuperview()
         }
     }
@@ -74,11 +85,11 @@ extension LikeListViewController {
     private func layout() -> UICollectionViewFlowLayout {
         let layout = UICollectionViewFlowLayout()
         layout.itemSize = CGSize(
-            width: Int(UIScreen.main.bounds.width - 12 * 3) / 2,
+            width: Int(UIScreen.main.bounds.width - CGFloat(smallMargin * 3)) / 2,
             height: Int(UIScreen.main.bounds.height) / 3)
         layout.scrollDirection = .vertical
-        layout.minimumLineSpacing = 12
-        layout.minimumInteritemSpacing = 12
+        layout.minimumLineSpacing = CGFloat(smallMargin)
+        layout.minimumInteritemSpacing = CGFloat(smallMargin)
         return layout
     }
 }

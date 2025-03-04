@@ -122,8 +122,6 @@ final class ShoppingListViewModel: ViewModel {
                       errorNoti: errroNoti.asDriver(onErrorDriveWith: .empty())
         )
     }
-    /// 12
-    let spacing: CGFloat = 12
     
     private func configTotalCount(total: Int) -> String? {
         let formatter = NumberFormatter()
