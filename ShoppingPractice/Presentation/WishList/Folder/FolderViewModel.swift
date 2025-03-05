@@ -34,7 +34,8 @@ final class FolderViewModel: ViewModel {
                 return Array(scheme).map {
                     Folder(
                         id: $0.id,
-                        name: $0.name
+                        name: $0.name,
+                        count: $0.items.count
                     )
                 }
             }
@@ -44,5 +45,19 @@ final class FolderViewModel: ViewModel {
         
         return Output(storedFolder: folders.asDriver())
     }
+    
+    func id(index: Int) -> ObjectId {
+        return list[index].id
+    }
+    
+    func list(index: Int) -> List<WishListScheme> {
+        return list[index].items
+    }
+    
+    func title(index: Int) -> String {
+        return list[index].name
+    }
+    
+    
 }
 

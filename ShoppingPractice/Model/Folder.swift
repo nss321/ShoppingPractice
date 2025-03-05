@@ -10,5 +10,5 @@ import RealmSwift
 struct Folder {
     let id: ObjectId
     let name: String
-//    let count: Int
+    let count: Int
 }

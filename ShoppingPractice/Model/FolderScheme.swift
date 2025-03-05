@@ -11,7 +11,7 @@ final class FolderScheme: Object {
     @Persisted var id: ObjectId
     @Persisted var name: String
     
-//    @Persisted var detail: List<>
+    @Persisted var items: List<WishListScheme>
     
     convenience init(name: String) {
         self.init()

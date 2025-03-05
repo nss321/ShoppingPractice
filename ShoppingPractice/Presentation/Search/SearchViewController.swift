@@ -23,8 +23,7 @@ final class SearchViewController: BaseViewController {
         view.addSubview(searchBar)
         searchBar.snp.makeConstraints {
             $0.top.equalTo(view.safeAreaLayoutGuide)
-            $0.horizontalEdges.equalToSuperview()
-            $0.height.equalTo(44)
+            $0.horizontalEdges.equalToSuperview().inset(smallMargin)
         }
     }
     
