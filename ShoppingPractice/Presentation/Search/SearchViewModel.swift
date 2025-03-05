@@ -36,8 +36,6 @@ final class SearchViewModel: ViewModel {
         let isValid = PublishRelay<Bool>()
         
         input.searchButtonClick
-        // 디바운스는 동작이 어색하다.
-//            .debounce(.seconds(1), scheduler: MainScheduler.instance)
             .throttle(.seconds(1), scheduler: MainScheduler.instance)
             .withLatestFrom(input.searchKeyword)
             .map({ keyword -> Bool in

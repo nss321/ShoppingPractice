@@ -42,7 +42,7 @@ final class SearchViewController: BaseViewController {
         let wishButton = UIBarButtonItem(
             image: UIImage(systemName: "list.number"),
             primaryAction: UIAction(handler: { [weak self] _ in
-                self?.navigationController?.pushViewController(WishListViewController(), animated: true)
+                self?.navigationController?.pushViewController(FolderViewController(), animated: true)
             }))
         let likeButton = UIBarButtonItem(
             image: UIImage(systemName: "heart.fill"),
