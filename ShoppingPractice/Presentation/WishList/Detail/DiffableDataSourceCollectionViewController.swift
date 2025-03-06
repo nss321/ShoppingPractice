@@ -138,6 +138,8 @@ private extension DiffableDataSourceCollectionViewController {
 //        if !newList.isEmpty { snapshot.appendItems(newList, toSection: .new) }
         
         dataSource.apply(snapshot)
+        // tableView.reloadData와 동일함. 애니메이션도 없어짐
+//        dataSource.applySnapshotUsingReloadData(snapshot)
     }
     
     func deleteItem(item: DiffableModel, list: inout [DiffableModel]) {

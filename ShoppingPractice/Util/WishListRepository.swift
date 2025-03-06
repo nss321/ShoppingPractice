@@ -38,9 +38,10 @@ final class WishListTableRepository: WishListRepository {
         }
     }
     
-    func deleteItem(data: WishListScheme){
+    func deleteItem(data: WishListScheme) {
         do {
             try realm.write {
+                print("다음 데이터를 삭제", data)
                 realm.delete(data)
                 print("렐름 삭제 왈름", data)
             }

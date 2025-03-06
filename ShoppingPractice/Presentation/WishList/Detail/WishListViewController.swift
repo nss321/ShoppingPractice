@@ -34,15 +34,14 @@ final class WishListViewController: BaseViewController {
         let input = WishListViewModel.Input(
             searchButtonClicked: searchBar.rx.searchButtonClicked,
             searchBarText: searchBar.rx.text,
-            itemSelect: collectionView.rx.itemSelected
+            itemSelect: collectionView.rx.modelSelected(WishListScheme.self)
         )
         let output = viewModel?.transform(input: input)
         
         output?.storedWishList
             .drive(collectionView.rx.items(cellIdentifier: "wishlist", cellType: UICollectionViewListCell.self)) ({ _, element, cell in
-//                print("cell element", element)
                 var content = cell.defaultContentConfiguration()
-                content.text = element.title
+                content.text = element.name
                 content.textProperties.color = .label
                 content.textProperties.font = .systemFont(ofSize: 16)
 //                content.secondaryText = element.content
@@ -58,25 +57,12 @@ final class WishListViewController: BaseViewController {
             })
             .disposed(by: disposeBag)
         
-        output?.reload
-            .drive(with: self) { owner, _ in
-                print("reload observed")
-//                owner.collectionView.section
-//                owner.collectionView.reloadSections(<#T##sections: IndexSet##IndexSet#>)
-//                owner.collectionView.deleteItems(at: [IndexPath(row: 0, section: 0)])
-//                owner.collectionView.deleteSections(IndexSet(integer: 0))
-//                owner.collectionView.rx.numb
-                owner.collectionView.reloadData()
-                
-            }
-            .disposed(by: disposeBag)
-        
-        collectionView.rx.modelSelected(WishList.self)
-            .bind(with: self) { owner, wishList in
-                print(wishList)
-                // TODO: 삭제 얼럿
-            }
-            .disposed(by: disposeBag)
+//        collectionView.rx.modelSelected(WishListScheme.self)
+//            .bind(with: self) { owner, wishList in
+//                print(wishList)
+//                // TODO: 삭제 얼럿
+//            }
+//            .disposed(by: disposeBag)
         
         searchBar.rx.searchButtonClicked
             .bind(with: self) { owner, _ in
