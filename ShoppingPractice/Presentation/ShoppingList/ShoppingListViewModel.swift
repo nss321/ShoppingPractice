@@ -40,7 +40,7 @@ final class ShoppingListViewModel: ViewModel {
         let shoppingListVC = PublishRelay<DetailWebViewController>()
         
         
-        // MARK: operator 부분과 bind 부분이 똑같은데 이것도 줄일 수는 없는지?
+        // TODO: operator 부분과 bind 부분이 똑같은데 이것도 줄일 수는 없는지?
         searchKeyword
             .flatMap { keyword in
                 ShoppingService.shared.callSearchAPI(api: .sorted(keyword: keyword, sortby: .sim, startAt: 1), type: Merchandise.self)

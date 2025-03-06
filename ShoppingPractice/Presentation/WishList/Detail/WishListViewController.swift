@@ -7,7 +7,6 @@
 
 import UIKit
 
-import RealmSwift
 import RxSwift
 import RxCocoa
 import SnapKit
@@ -34,12 +33,14 @@ final class WishListViewController: BaseViewController {
     override func bind() {
         let input = WishListViewModel.Input(
             searchButtonClicked: searchBar.rx.searchButtonClicked,
-            searchBarText: searchBar.rx.text)
+            searchBarText: searchBar.rx.text,
+            itemSelect: collectionView.rx.itemSelected
+        )
         let output = viewModel?.transform(input: input)
         
         output?.storedWishList
             .drive(collectionView.rx.items(cellIdentifier: "wishlist", cellType: UICollectionViewListCell.self)) ({ _, element, cell in
-                
+//                print("cell element", element)
                 var content = cell.defaultContentConfiguration()
                 content.text = element.title
                 content.textProperties.color = .label
@@ -59,7 +60,14 @@ final class WishListViewController: BaseViewController {
         
         output?.reload
             .drive(with: self) { owner, _ in
+                print("reload observed")
+//                owner.collectionView.section
+//                owner.collectionView.reloadSections(<#T##sections: IndexSet##IndexSet#>)
+//                owner.collectionView.deleteItems(at: [IndexPath(row: 0, section: 0)])
+//                owner.collectionView.deleteSections(IndexSet(integer: 0))
+//                owner.collectionView.rx.numb
                 owner.collectionView.reloadData()
+                
             }
             .disposed(by: disposeBag)
         
@@ -100,28 +108,7 @@ final class WishListViewController: BaseViewController {
 private extension WishListViewController {
     func layout() -> UICollectionViewLayout {
         let configuration = UICollectionLayoutListConfiguration(appearance: .insetGrouped)
-//        configuration.trailingSwipeActionsConfigurationProvider = makeSwipeActions
         let layout = UICollectionViewCompositionalLayout.list(using: configuration)
         return layout
     }
-    
-//    func makeSwipeActions(for indexPath: IndexPath?) -> UISwipeActionsConfiguration? {
-//        guard let indexPath = indexPath,
-//                let item = dataSource.itemIdentifier(for: indexPath) else { return nil }
-//        
-//        // 왜 3번, 1번 총 4번 호출되는걸까
-//        print(item)
-//        
-//        let deleteAction = UIContextualAction(style: .destructive, title: nil) { [weak self] _, _, completion in
-//            if let index = self?.filledList.firstIndex(of: item) {
-//                self?.filledList.remove(at: index)
-//            }
-//            completion(false)
-//        }
-//    
-//        deleteAction.image = UIImage(systemName: "trash.fill")
-//    
-//        return UISwipeActionsConfiguration(actions: [deleteAction])
-//    }
-    
 }

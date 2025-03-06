@@ -5,6 +5,8 @@
 //  Created by BAE on 3/6/25.
 //
 
+import Foundation
+
 import RealmSwift
 import RxCocoa
 import RxSwift
@@ -13,6 +15,7 @@ final class WishListViewModel: ViewModel {
     struct Input {
         let searchButtonClicked: ControlEvent<Void>
         let searchBarText: ControlProperty<String?>
+        let itemSelect: ControlEvent<IndexPath>
     }
     struct Output {
         let storedWishList: Driver<[WishList]>
@@ -20,8 +23,8 @@ final class WishListViewModel: ViewModel {
     }
     
     private var id: ObjectId
+    private(set) var list: List<WishListScheme>
     private(set) var navTitle: String
-    private var list: List<WishListScheme>
     private let disposeBag = DisposeBag()
     private let repository: WishListRepository = WishListTableRepository()
     private let folderRepository: FolderRepository = FolderTableRepository()
@@ -38,10 +41,9 @@ final class WishListViewModel: ViewModel {
         
         Observable.of(list)
             .compactMap { $0 }
-            .map { scheme in
-                return Array(scheme).map {
-                    WishList(id: $0.id, title: $0.name)
-                }
+            .withUnretained(self)
+            .map { owner, scheme in
+                return owner.makeWishListList(data: scheme)
             }
             .bind(to: wishListList)
             .disposed(by: disposeBag)
@@ -49,16 +51,29 @@ final class WishListViewModel: ViewModel {
         input.searchButtonClicked
             .throttle(.seconds(1), scheduler: MainScheduler.instance)
             .withLatestFrom(input.searchBarText.orEmpty)
-            .distinctUntilChanged()
+//            .distinctUntilChanged()
             .bind(with: self) { owner, text in
                 owner.createNewRow(text: text)
-                reload.accept(())
+                wishListList.accept(owner.makeWishListList(data: owner.list))
             }
             .disposed(by: disposeBag)
         
+        input.itemSelect
+            .bind(with: self) { owner, index in
+                let item = owner.list[index.item]
+                owner.repository.deleteItem(data: item)
+                // TODO: 마지막 셀 삭제 시 index out of range 에러 해결
+                if owner.list.count == 0 {
+//                    wishListList.accept([])
+//                    reload.accept(())
+                } else {
+                    wishListList.accept(owner.makeWishListList(data: owner.list))
+                }
+            }
+            .disposed(by: disposeBag)
         
-        return Output(storedWishList: wishListList.asDriver(),
-                      reload: reload.asDriver(onErrorDriveWith: .empty())
+        return Output(
+            storedWishList: wishListList.asDriver(), reload: reload.asDriver(onErrorDriveWith: .empty())
         )
     }
     
@@ -70,5 +85,8 @@ final class WishListViewModel: ViewModel {
         repository.createItem(folder: folder, text: text)
     }
     
+    private func makeWishListList(data: List<WishListScheme>) -> [WishList] {
+        return data.isEmpty ? [] : Array(data).map { WishList(id: $0.id, title: $0.name) }
+    }
 }
 

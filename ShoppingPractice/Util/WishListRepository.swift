@@ -10,7 +10,7 @@ import Foundation
 import RealmSwift
 
 protocol WishListRepository {
-    func fetchAll() -> Results<WishListScheme>
+    func fetchAll(folder: FolderScheme) -> Results<WishListScheme>
     func createItem(folder: FolderScheme, text: String)
     func deleteItem(data: WishListScheme)
     func updateItem(data: WishListScheme, text: String)
@@ -20,8 +20,9 @@ final class WishListTableRepository: WishListRepository {
     
     private let realm = try! Realm()
     
-    func fetchAll() -> Results<WishListScheme> {
+    func fetchAll(folder: FolderScheme) -> Results<WishListScheme> {
         return realm.objects(WishListScheme.self)
+            .where { $0.folder == folder }
     }
     
     func createItem(folder: FolderScheme, text: String) {
